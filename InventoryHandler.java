@@ -1,25 +1,32 @@
+package edu.ucalgary.ensf409;
+
 import java.util.*;
 
 /**
- *          
+ * 
  * @author Gurpartap Sohi <a href="mailto:gurpartap.sohi@ucalgary.ca">
  *         gurpartap.sohi@ucalgary.ca</a>
- *         
+ * 
  * @author Tahseen Intesar <a href="mailto:tahseen.intesar@ucalgary.ca">
  *         tahseen.intesar@ucalgary.ca</a>
- *         
+ * 
  * @author Nabeel Amjad<a href="mailto:nabeel.amjad@ucalgary.ca">
- *         nabeel.amjad@ucalgary.ca</a>    
- *         
+ *         nabeel.amjad@ucalgary.ca</a>
+ * 
  * @version 1.0
  * @since 1.0
  */
+
 public class InventoryHandler {
 	private ArrayList<ArrayList<Furniture>> combinations = new ArrayList<ArrayList<Furniture>>();;
 	private ArrayList<ArrayList<Furniture>> order = new ArrayList<ArrayList<Furniture>>();
 
-	InventoryHandler(ArrayList<Furniture> furnitureData) {
+	public InventoryHandler(ArrayList<Furniture> furnitureData) {
 		this.setCombinations(removeExcessCombinations(generateCombinations(furnitureData)));
+	}
+
+	public InventoryHandler(InventoryHandler inv) {
+		this.combinations = inv.getCombinations();
 	}
 
 	public ArrayList<ArrayList<Furniture>> generateCombinations(ArrayList<Furniture> f) {
@@ -259,7 +266,7 @@ public class InventoryHandler {
 
 	public boolean removeExcessCheck(ArrayList<ArrayList<Furniture>> frnt) {
 		int k = 0;
-		boolean found = false;
+		// boolean found = false;
 		for (int i = 0; i < frnt.size(); i++) {
 			for (int j = 0; j < frnt.size(); j++) {
 				if (frnt.get(i).size() < frnt.get(j).size()) {
@@ -269,16 +276,18 @@ public class InventoryHandler {
 						}
 					}
 					if (k == frnt.get(i).size()) {
-						found = true;
-						return found;
+						// found = true;
+						// return found;
+						return true;
 					}
 				}
 			}
 		}
-		return found;
+		// return found;
+		return false;
 	}
 
-	public int removeExcess(ArrayList<ArrayList<Furniture>> frnt) {
+	public int removeExcessIndex(ArrayList<ArrayList<Furniture>> frnt) {
 		int k;
 		int index = 0;
 		for (int i = 0; i < frnt.size(); i++) {
@@ -290,8 +299,7 @@ public class InventoryHandler {
 						}
 					}
 					if (k == frnt.get(i).size()) {
-						index = j;
-						return index;
+						return j;
 					}
 				}
 			}
@@ -302,7 +310,7 @@ public class InventoryHandler {
 	public ArrayList<ArrayList<Furniture>> removeExcessCombinations(ArrayList<ArrayList<Furniture>> f) {
 		ArrayList<ArrayList<Furniture>> fList = new ArrayList<ArrayList<Furniture>>(f);
 		while (removeExcessCheck(fList)) {
-			fList.remove(removeExcess(fList));
+			fList.remove(removeExcessIndex(fList));
 		}
 		return fList;
 	}
@@ -326,8 +334,7 @@ public class InventoryHandler {
 			for (int j = 0; j < order.size(); j++) {
 				for (int k = 0; k < order.get(j).size(); k++) {
 					if (source.get(i).contains(order.get(j).get(k))) {
-						index = i;
-						return index;
+						return i;
 					}
 				}
 			}
@@ -342,27 +349,6 @@ public class InventoryHandler {
 			fList.remove(combinationUsedIndex(fList, order));
 		}
 		return fList;
-	}
-
-	public ArrayList<ArrayList<Furniture>> validateOrder(int n, ArrayList<ArrayList<Furniture>> f) {
-		ArrayList<ArrayList<Furniture>> f2 = new ArrayList<ArrayList<Furniture>>(f);
-		ArrayList<ArrayList<Furniture>> f3 = new ArrayList<ArrayList<Furniture>>();
-		int i;
-
-		for (i = 0; i < n; i++) {
-			if (!f2.isEmpty()) {
-				int index = findCheapest(f2);
-				f3.add(f2.get(index));
-				f2 = removeUsedCombinations(f2, f3);
-			} else {
-				break;
-			}
-		}
-		/*
-		 * if(i == n) { displayCombinations(f3); System.out.println("Valid Order");
-		 * return true; } else { System.out.println("Invalid Order"); return false; }
-		 */
-		return f3;
 	}
 
 	public void displayCombinations(ArrayList<ArrayList<Furniture>> f) {
@@ -386,31 +372,11 @@ public class InventoryHandler {
 		System.out.println("Cheapest combination will cost: $" + total + ".");
 	}
 
-	public void displayOrder() {
-		for (int i = 0; i < this.getOrder().size(); i++) {
-			System.out.print("Order " + i + ": ");
-			for (int j = 0; j < this.getOrder().get(i).size(); j++) {
-				System.out.print(this.getOrder().get(i).get(j).getID() + " ");
-				System.out.print(" $" + this.getOrder().get(i).get(j).getPrice() + " ");
-			}
-			System.out.println();
-		}
-	}
-
 	public ArrayList<ArrayList<Furniture>> getCombinations() {
 		return this.combinations;
 	}
 
-	public ArrayList<ArrayList<Furniture>> getOrder() {
-		return this.order;
-	}
-
 	public void setCombinations(ArrayList<ArrayList<Furniture>> fr) {
-		this.combinations = fr;
+		this.combinations = new ArrayList<ArrayList<Furniture>>(fr);
 	}
-
-	public void setOrder(ArrayList<ArrayList<Furniture>> fr_Order) {
-		this.order = fr_Order;
-	}
-
 }

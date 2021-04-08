@@ -1,4 +1,6 @@
+package edu.ucalgary.ensf409;
 import java.util.Scanner;
+import java.io.IOException;
 
 /**
  * @author Tahseen Intesar <a href="mailto:tahseen.intesar@ucalgary.ca">
@@ -102,9 +104,6 @@ public class SupplyChainOperator {
 			e.printStackTrace();
 		}
 		
-		//user inputs complete, now initialize inventory manager
-		this.createInventoryHandler();
-
 		input.close();
 	}
 
@@ -112,18 +111,15 @@ public class SupplyChainOperator {
 		this.inventory = new InventoryHandler(driver.getFurniture(this.getUserItem(), this.getUserType()));
 	}
 	
-	public void createOrderForm() {
-		System.out.println("User has selected: " + userQty + " " + userItem + " " + userType);
-		inventory.setOrder(inventory.validateOrder(userQty, inventory.getCombinations()));
+	public void createOrderForm() throws IOException {
 		
-		if(inventory.getOrder().size() == userQty) {
-			System.out.println("Valid order");
-			inventory.displayOrder();
-		}
-		else {
-			System.out.println("Invalid Order");
-		}
+		receipt = new OrderForm(this.inventory);
+		
+		receipt.createOrderForm(this.getUserQty(), this.getUserType(), this.getUserItem());
+		receipt.generateReceipt(this.getUserItem(), this.getUserType(), this.getUserQty());
+		
 	}
+	
 	
 	public String isValidItem(String itemChoice) {
 		// (userItem = input.nextLine()).length() > 1 &&
@@ -210,6 +206,7 @@ public class SupplyChainOperator {
 		System.out.println("You will be prompted for a number from a given list.");
 
 		operator.promptUser();
+		operator.createInventoryHandler();
 		operator.createOrderForm();
 	}
 
