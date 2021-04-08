@@ -19,16 +19,21 @@ public class DatabaseConnection {
 	
 	public DatabaseConnection() {
 		
-		//first, get the database login credentials
-		Scanner databasePrompter = new Scanner(System.in);
-		String username = "";
-		String password = "";
+		//UNCOMMENT SCANNER AND TRY/CATCH FOR THE FINAL DEMO/HANDING IN
+		//SET USERNAME AND PASSWORD TO ""
 		
+		
+		//first, get the database login credentials
+		//Scanner databasePrompter = new Scanner(System.in);
+		String username = "scm";
+		String password = "ensf409";
+		
+		/*
 		try {
 			System.out.println("\nPlease enter the database username.");
 			username = databasePrompter.nextLine();
 			
-			System.out.println("Please enter Database Password.");
+			System.out.println("Please enter database password.");
 			password = databasePrompter.nextLine();
 			
 		}
@@ -37,17 +42,21 @@ public class DatabaseConnection {
 			System.out.println("Unable to obtain mySQL login credentials. Please restart the program.");
 			System.exit(1);
 		}
+		*/
 		this.DBUSER = username;
 		this.DBPASS = password;
 		
 		//after getting the credentials, connect to the database
 		this.initializeConnection();
-		databasePrompter.close();
+		
+		//HAVE TO CLOSE AFTER FINISHED USING DATABASE
+		//databasePrompter.close();
 	}
 	
 	public void initializeConnection() { 
 		try {
 			this.dbConnect = DriverManager.getConnection(this.DBURL, this.DBUSER, this.DBPASS);
+			System.out.println("Connection successful!\n\n");
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
