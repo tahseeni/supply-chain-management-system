@@ -3,10 +3,19 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * 
- * @author Tahseen Intesar, Gurpartap Sohi
- *
+ * @author Tahseen Intesar <a href="mailto:tahseen.intesar@ucalgary.ca">
+ *         tahseen.intesar@ucalgary.ca</a>
+ *         
+ * @author Gurpartap Sohi <a href="mailto:gurpartap.sohi@ucalgary.ca">
+ *         gurpartap.sohi@ucalgary.ca</a>
+ *         
+ * @author Nabeel Amjad<a href="mailto:nabeel.amjad@ucalgary.ca">
+ *         nabeel.amjad@ucalgary.ca</a>    
+ *         
+ * @version 1.0
+ * @since 1.0
  */
+
 
 public class DatabaseConnection {
 
@@ -73,21 +82,23 @@ public class DatabaseConnection {
             
             stmt.setString(1, type);
 
-            ResultSet r = stmt.executeQuery();
-            while(r.next()) {
-                String ID = r.getString("ID");
-                int price = r.getInt("Price");
-                int partsNum = r.getMetaData().getColumnCount() - 4;
+            line = stmt.executeQuery();
+            while(line.next()) {
+                String ID = line.getString("ID");
+                int price = line.getInt("Price");
+                int partsNum = line.getMetaData().getColumnCount() - 4;
                 char[] parts = new char[partsNum];
                 for(int i = 0; i < partsNum; i++) {
-					parts[i] = r.getString(i + 3).charAt(0);
+					parts[i] = line.getString(i + 3).charAt(0);
                 }
-                Furniture furn = new Furniture(ID, price, parts);
-                furniture.add(furn);
+                Furniture newItem = new Furniture(ID, price, parts);
+                furniture.add(newItem);
             }
             stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
+            System.out.println("There was an issue with getting the furniture table. Exiting program.");
+            System.exit(1);
         }
         return furniture;
     }
@@ -95,14 +106,11 @@ public class DatabaseConnection {
 	public void removeFurniture(ArrayList<Furniture> furniture, String category) {
         try {
             String query = String.format("DELETE FROM %s WHERE ID IN ('", category);
-			for(int i = 0; i < furniture.size(); i++)
-			{
-				if(i != furniture.size() - 1)
-				{
+			for(int i = 0; i < furniture.size(); i++) {
+				if(i != furniture.size() - 1) {
 					query += furniture.get(i).getID() + "', '";
 				}
-				else
-				{
+				else {
 					query += furniture.get(i).getID() + "')";
 				}
 			}
