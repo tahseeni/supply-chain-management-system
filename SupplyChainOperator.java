@@ -104,14 +104,6 @@ public class SupplyChainOperator {
 		
 		//user inputs complete, now initialize inventory manager
 		this.createInventoryHandler();
-		
-		//inventory.displayCombinations(inventory.getCombinations());
-		//inventory.displayCheapestCombination(inventory.getCombinations());
-		
-		
-		
-		//check for availability
-		//this.inventory.displayCheapestCombination(f);
 
 		input.close();
 	}
@@ -121,7 +113,16 @@ public class SupplyChainOperator {
 	}
 	
 	public void createOrderForm() {
+		System.out.println("User has selected: " + userQty + " " + userItem + " " + userType);
+		inventory.setOrder(inventory.validateOrder(userQty, inventory.getCombinations()));
 		
+		if(inventory.getOrder().size() == userQty) {
+			System.out.println("Valid order");
+			inventory.displayOrder();
+		}
+		else {
+			System.out.println("Invalid Order");
+		}
 	}
 	
 	public String isValidItem(String itemChoice) {
@@ -209,6 +210,7 @@ public class SupplyChainOperator {
 		System.out.println("You will be prompted for a number from a given list.");
 
 		operator.promptUser();
+		operator.createOrderForm();
 	}
 
 }
