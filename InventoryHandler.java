@@ -14,12 +14,12 @@ import java.util.*;
  * @version 1.0
  * @since 1.0
  */
-
 public class InventoryHandler {
 	private ArrayList<ArrayList<Furniture>> combinations = new ArrayList<ArrayList<Furniture>>();;
+	private ArrayList<ArrayList<Furniture>> order = new ArrayList<ArrayList<Furniture>>();
 
 	InventoryHandler(ArrayList<Furniture> furnitureData) {
-		this.combinations = generateCombinationsWithoutExcess(generateCombinations(furnitureData));
+		this.setCombinations(removeExcessCombinations(generateCombinations(furnitureData)));
 	}
 
 	public ArrayList<ArrayList<Furniture>> generateCombinations(ArrayList<Furniture> f) {
@@ -299,7 +299,7 @@ public class InventoryHandler {
 		return index;
 	}
 
-	public ArrayList<ArrayList<Furniture>> generateCombinationsWithoutExcess(ArrayList<ArrayList<Furniture>> f) {
+	public ArrayList<ArrayList<Furniture>> removeExcessCombinations(ArrayList<ArrayList<Furniture>> f) {
 		ArrayList<ArrayList<Furniture>> fList = new ArrayList<ArrayList<Furniture>>(f);
 		while (removeExcessCheck(fList)) {
 			fList.remove(removeExcess(fList));
@@ -312,7 +312,6 @@ public class InventoryHandler {
 			for (int j = 0; j < order.size(); j++) {
 				for (int k = 0; k < order.get(j).size(); k++) {
 					if (source.get(i).contains(order.get(j).get(k))) {
-
 						return true;
 					}
 				}
@@ -345,7 +344,7 @@ public class InventoryHandler {
 		return fList;
 	}
 
-	public boolean validateOrder(int n, ArrayList<ArrayList<Furniture>> f) {
+	public ArrayList<ArrayList<Furniture>> validateOrder(int n, ArrayList<ArrayList<Furniture>> f) {
 		ArrayList<ArrayList<Furniture>> f2 = new ArrayList<ArrayList<Furniture>>(f);
 		ArrayList<ArrayList<Furniture>> f3 = new ArrayList<ArrayList<Furniture>>();
 		int i;
@@ -359,14 +358,11 @@ public class InventoryHandler {
 				break;
 			}
 		}
-		if (i == n) {
-			displayCombinations(f3);
-			System.out.println("Valid Order. Generating Receipt.");
-			return true;
-		} else {
-			System.out.println("Invalid Order. The current supply of parts is unable to generate " + n + " items.");
-			return false;
-		}
+		/*
+		 * if(i == n) { displayCombinations(f3); System.out.println("Valid Order");
+		 * return true; } else { System.out.println("Invalid Order"); return false; }
+		 */
+		return f3;
 	}
 
 	public void displayCombinations(ArrayList<ArrayList<Furniture>> f) {
@@ -387,10 +383,34 @@ public class InventoryHandler {
 		for (int i = 0; i < f.get(index).size(); i++) {
 			total += f.get(index).get(i).getPrice();
 		}
-		System.out.println("Cheapest (single) combination will cost: $" + total + ".");
+		System.out.println("Cheapest combination will cost: $" + total + ".");
+	}
+
+	public void displayOrder() {
+		for (int i = 0; i < this.getOrder().size(); i++) {
+			System.out.print("Order " + i + ": ");
+			for (int j = 0; j < this.getOrder().get(i).size(); j++) {
+				System.out.print(this.getOrder().get(i).get(j).getID() + " ");
+				System.out.print(" $" + this.getOrder().get(i).get(j).getPrice() + " ");
+			}
+			System.out.println();
+		}
 	}
 
 	public ArrayList<ArrayList<Furniture>> getCombinations() {
 		return this.combinations;
 	}
+
+	public ArrayList<ArrayList<Furniture>> getOrder() {
+		return this.order;
+	}
+
+	public void setCombinations(ArrayList<ArrayList<Furniture>> fr) {
+		this.combinations = fr;
+	}
+
+	public void setOrder(ArrayList<ArrayList<Furniture>> fr_Order) {
+		this.order = fr_Order;
+	}
+
 }

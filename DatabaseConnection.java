@@ -91,7 +91,7 @@ public class DatabaseConnection {
                 for(int i = 0; i < partsNum; i++) {
 					parts[i] = line.getString(i + 3).charAt(0);
                 }
-                Furniture newItem = new Furniture(ID, price, parts);
+                Furniture newItem = new Furniture(ID, type, category, price, parts);
                 furniture.add(newItem);
             }
             stmt.close();

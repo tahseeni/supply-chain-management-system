@@ -19,7 +19,11 @@ import java.io.FileWriter;
 //furniture receipt
 public class OrderForm {
 	
-	/**
+	/** 
+	 * 
+	 * WORK IN PROGRESS. DO WHATEVER YOU WANT WITH IT RN
+	 * 
+	 * 
 	 * Furniture Order Form
 	
 	Faculty Name:

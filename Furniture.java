@@ -23,13 +23,14 @@ public class Furniture {
 	private String manufactureID;
 	private char[] parts;
 
-	public Furniture(String id, int price, char[] parts) {
+	public Furniture(String id, String type, String category, int price, char [] parts) {
 		this.id = id;
-		// this.type = type;
-		this.price = price;
-		// this.manufactureID = manuf_ID;
+        this.type = type;
+        this.category = category;
+        this.price = price;
+		//this.manufactureID = manuf_ID;
 		this.parts = parts;
-	}
+    }
 
 	public String getID() {
 		return this.id;
@@ -58,5 +59,4 @@ public class Furniture {
 	public void setPrice(int price) {
 		this.price = price;
 	}
-
 }
