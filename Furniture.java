@@ -3,34 +3,24 @@ import java.util.ArrayList;
 
 /**
  * 
- * @author 
+ * @author Tahseen Intesar, Gurpartap Sohi
  *
  */
-
 public class Furniture {
 	
 	String id; 
     String type;
     int price; 
     String manufactureID;
-        
-    ArrayList <String> parts = new ArrayList <>();
+    char[] parts;
 
-    public Furniture(ResultSet row) 
+    public Furniture(String id, int price, char [] parts) 
     {
-    	try {
-    		this.id = row.getString("ID");
-    		this.type = row.getString("Type");
-    		this.price = row.getInt("Price");
-    		this.manufactureID = row.getString("ManuID");
-    		
-    		//parts array initialized
-    		
-    	}
-    	catch(SQLException e) {
-    		System.out.println("Unable to extract data.");
-    		e.printStackTrace();
-    	}
+    		this.id = id;
+            //this.type = type;
+            this.price = price;
+    		//this.manufactureID = manuf_ID;
+    		this.parts = parts;
     }
     
     public String getID(){
@@ -45,6 +35,9 @@ public class Furniture {
         return price; 
     }
 
+    public char[] getParts(){
+        return this.parts;
+    }
     
     public void setID(String id){
         this.id = id;
