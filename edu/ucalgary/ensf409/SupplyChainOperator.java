@@ -10,12 +10,14 @@ import java.io.IOException;
  *         gurpartap.sohi@ucalgary.ca</a>
  *         
  * @author Nabeel Amjad<a href="mailto:nabeel.amjad@ucalgary.ca">
- *         nabeel.amjad@ucalgary.ca</a>    
+ *         nabeel.amjad@ucalgary.ca</a>  
  *         
- * @version 1.0
+ * @author Stalin D Cunha<a href="mailto:stalin.dcunha@ucalgary.ca">
+ *         stalin.dcunha@ucalgary.ca</a>
+ *         
+ * @version 1.1
  * @since 1.0
  */
-
 
 /**
  * SupplyChainOperator is the main class, which handles program execution
