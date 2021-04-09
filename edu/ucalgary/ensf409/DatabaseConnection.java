@@ -17,16 +17,26 @@ import java.util.Scanner;
  * @since 1.0
  */
 
-
+/**
+ * DatabaseConnection establishes the connection to the mySQL database.
+ * The class is also responsible for extracting and removing entries 
+ * from the database.
+ */
 public class DatabaseConnection {
 
-	private final String DBUSER; //scm
-	private final String DBPASS; //ensf409
+	private final String DBUSER;
+	private final String DBPASS;
 	private final String DBURL = "jdbc:mysql://localhost/inventory";
 	
 	private Connection dbConnect;	//connection between database and program
 	private ResultSet line;			//pointer for database table row
 	
+	/**
+	 * constructor for DatabaseConnection(), the database user name
+	 * and password will be requested using a Scanner object.
+	 * Calls the initializeConnection() method.
+	 * No arguments taken, no return value.
+	 */
 	public DatabaseConnection() {
 		
 		//UNCOMMENT SCANNER AND TRY/CATCH FOR THE FINAL DEMO/HANDING IN
@@ -63,6 +73,12 @@ public class DatabaseConnection {
 		//databasePrompter.close();
 	}
 	
+	/**
+	 * initializeConnection() is a helper method called by the constructor.
+	 * The connection to the mySQL database is attempted using the user inputs.
+	 * If the login fails, an SQLException is caught and the program exits.
+	 * No arguments taken, no return value.
+	 */
 	public void initializeConnection() { 
 		try {
 			this.dbConnect = DriverManager.getConnection(this.DBURL, this.DBUSER, this.DBPASS);
@@ -75,6 +91,15 @@ public class DatabaseConnection {
 		}
 	}
 	
+	/**
+	 * getFurniture() reads the mySQL database using PreparedStatement objects
+	 * if the database entries match what is requested from the parameters,
+	 * then they will be added to an ArrayList.
+	 * 
+	 * @param category - furniture item/category
+	 * @param type - furniture type
+	 * @return ArrayList of furniture data from the database
+	 */
 	public ArrayList <Furniture> getFurniture(String category, String type){
         ArrayList <Furniture> furniture = new ArrayList<Furniture>();
         try {
@@ -104,6 +129,14 @@ public class DatabaseConnection {
         return furniture;
     }
 	
+	/**
+	 * removeFurniture is the method that removes the found entries from the
+	 * database after they have been sent to the order form receipt.
+	 * No return value.
+	 * 
+	 * @param furniture - ArrayList of furniture entry to be removed
+	 * @param category - furniture item/category to delete from
+	 */
 	public void removeFurniture(ArrayList<Furniture> furniture, String category) {
         try {
             String query = String.format("DELETE FROM %s WHERE ID IN ('", category);
@@ -122,14 +155,21 @@ public class DatabaseConnection {
         }
     }
 	
+	/**
+	 * checkFunitureType() checks if the furniture type specified by the user
+	 * is available for its respective furniture item.
+	 * 
+	 * @param item - furniture item/category to check against
+	 * @param type - type of furniture item to be searched for
+	 * @return true if found, false if not found
+	 */
 	public boolean checkFurnitureType(String item, String type) {
 		try {
 			String query = "SELECT * FROM " + item + " WHERE Type = ?";
 			PreparedStatement ps = dbConnect.prepareStatement(query);
 			
 			ps.setString(1, type);
-			this.line = ps.executeQuery();
-			
+			this.line = ps.executeQuery();			
 			return line.next();
 		}
 		catch(SQLException e) {
@@ -137,6 +177,10 @@ public class DatabaseConnection {
 		}
 	}
 	
+	/**
+	 * close() closes the database, ensuring no resource leaks occur.
+	 * No arguments taken, no return value.
+	 */
 	public void close() {
         try {
             this.line.close();
