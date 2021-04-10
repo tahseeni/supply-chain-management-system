@@ -405,4 +405,5 @@ public class InventoryHandler {
 	public void setCombinations(ArrayList<ArrayList<Furniture>> fr) {
 		this.combinations = new ArrayList<ArrayList<Furniture>>(fr);
 	}
-}
+	
+} //end of class declaration, InventoryHandler

@@ -116,7 +116,7 @@ public class OrderForm {
     }
 
     /**
-     * Method to create an order form and generate a receipt for a valid order
+     * Method to create an order form and generate a receipt for a valid order.
      * 
      * @param userQty  - Quantity of item(s) ordered
      * @param userType - Type of item ordered
@@ -135,7 +135,8 @@ public class OrderForm {
             //db.removeFurniture(this.convertToItemsList(this.getOrder()), userItem);
             
         } else {
-            System.out.println("Invalid Order. It will not be processed.");
+            System.out.println("Order cannot be fulfilled based on with current inventory.");
+    		this.printSuggestedManufacturers(db, userItem);
         }
     }
 
@@ -163,11 +164,37 @@ public class OrderForm {
     		System.out.println("An error occurred when generating the receipt!");
     	}
     }
+    
+    /**
+     * Helper method used to print the suggested manufacturers from the database.
+     * Called by createOrderForm(), no return value.
+     * 
+     * @param db - DatabaseConnector object passed 
+     * @param item - Category of item ordered
+     */
+    public void printSuggestedManufacturers(DatabaseConnection db, String item) {
+    	ArrayList<String> manufacturers = new ArrayList<String>();
+    	manufacturers = db.getSuggestedManufacturers(item);
+    	
+    	//print message 
+    	String message = "\nSuggested manufacturers are ";
+    	for(int i = 0; i < manufacturers.size(); i++) {
+    		message += manufacturers.get(i);
+    		
+    		if(i == manufacturers.size() - 2) {
+    			message += " and ";
+    		}
+    		else if(i != manufacturers.size() - 1){
+    			message += ", ";
+    		}
+    	}
+    	System.out.println(message + ".");
+    }
 
     /**
      * Method to calculate total price of an order
      * 
-     * @param itemList ArrayList containing all ordered items
+     * @param itemList - ArrayList containing all ordered items
      * @return total price of an order
      */
     public int calculateOrderTotal(ArrayList<Furniture> itemsList) {
@@ -182,7 +209,7 @@ public class OrderForm {
      * Method to convert an ArrayList containing combinations of ordered items to
      * ArrayList containing all ordered items
      * 
-     * @param itemCombinations ArrayList containing combinations of ordered items
+     * @param itemCombinations - ArrayList containing combinations of ordered items
      * @return ArrayList containing ordered items
      */
     public ArrayList<Furniture> convertToItemsList(ArrayList<ArrayList<Furniture>> itemCombinations) {
@@ -194,4 +221,5 @@ public class OrderForm {
         }
         return items;
     }
-}
+    
+} //end of class declaration, OrderForm

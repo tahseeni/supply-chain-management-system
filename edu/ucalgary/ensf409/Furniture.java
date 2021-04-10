@@ -62,4 +62,4 @@ public class Furniture {
     public void setPrice(int price){
         this.price = price;
     }
-}
+} //end of class declaration, Furniture

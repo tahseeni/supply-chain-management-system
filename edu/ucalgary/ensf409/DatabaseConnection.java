@@ -133,7 +133,7 @@ public class DatabaseConnection {
     }
 	
 	/**
-	 * removeFurniture is the method that removes the found entries from the
+	 * removeFurniture() is the method that removes the found entries from the
 	 * database after they have been sent to the order form receipt.
 	 * No return value.
 	 * 
@@ -157,6 +157,61 @@ public class DatabaseConnection {
             e.printStackTrace();
         }
     }
+	
+	/**
+	 * Method called by the OrderForm class to retrieve the suggested
+	 * manufacturers from the database. Uses Statement and ResultSet objects.
+	 * 
+	 * @param category - Item category that is ordered
+	 * @return ArrayList of manufacturers
+	 */
+	public ArrayList<String> getSuggestedManufacturers(String category) {
+		ArrayList<String> m = new ArrayList<String>();
+		
+		try {
+			//get all the unique manuIDs (the foreign key in each category)
+			ArrayList<String> manuIDs = new ArrayList<String>();
+			String query = String.format("SELECT ManuID FROM %s", category);
+			Statement s = dbConnect.createStatement();
+			this.line = s.executeQuery(query);
+			
+			while(line.next()) {
+				String idToAdd = line.getString("ManuID"); //extract manuID from database
+				if(!manuIDs.contains(idToAdd)) {
+					manuIDs.add(idToAdd); //add if not already in the list
+				}
+			}
+			
+			//create new query based on the manuIDs ArrayList
+			query = "SELECT Name FROM MANUFACTURER WHERE ManuID IN (" + manuIDs.get(0);
+			if(manuIDs.size() > 1) {
+				for(int i = 0; i < manuIDs.size(); i++) {
+					query += ", " + manuIDs.get(i);
+				}
+			}
+			query += ")";
+			
+			//have to create new ResultSet and Statement objects for new query,
+			//so now we just get the names and add them to the ArrayList
+			Statement s2 = dbConnect.createStatement();
+			ResultSet line2 = s2.executeQuery(query);
+			while(line2.next()) {
+				String name = line2.getString("Name");
+				m.add(name);
+			}
+			
+			//now that all the data is collected, close all of the resources
+			line2.close();
+			s2.close();
+			s.close();
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+			System.out.println("There was an error when getting the suggested manufacturers.");
+		}
+		
+		return m;
+	}
 	
 	/**
 	 * checkFunitureType() checks if the furniture type specified by the user
@@ -194,4 +249,4 @@ public class DatabaseConnection {
         }
     }
 	
-}
+} //end of class declaration, DatabaseConnection
