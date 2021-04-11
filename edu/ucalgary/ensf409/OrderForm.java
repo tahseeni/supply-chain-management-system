@@ -91,7 +91,7 @@ public class OrderForm {
 
     /**
      * Method to return an ArrayList containing valid combinations of a furniture
-     * item that was requested
+     * item that was requested.
      * 
      * @param n - Number of item(s) ordered
      * @param f - ArrayList containing all combinations of a furniture item that was
@@ -117,16 +117,20 @@ public class OrderForm {
 
     /**
      * Method to create an order form and generate a receipt for a valid order.
+     * Prints messages to the console for the user, confirming that the
+     * order form has been generated, or that it is unable to fulfill the order.
+     * The method will print the suggested manufacturers if the order is invalid.
+     * No return value.
      * 
      * @param userQty  - Quantity of item(s) ordered
      * @param userType - Type of item ordered
      * @param userItem - Category of item ordered
      */
     public void createOrderForm(DatabaseConnection db, int userQty, String userType, String userItem) {
-        System.out.println("\n\nUser has selected: " + userQty + " " + userType + " " + userItem);
+        System.out.println("\nUser has selected: " + userQty + " " + userType + " " + userItem);
         this.setOrder(generateOrder(userQty, this.getInventory().getCombinations()));
         if (this.getOrder().size() == userQty) {
-            System.out.println("Order is valid. It will now be processed.");
+            System.out.println("\n\nOrder is valid. It will now be processed.");
             System.out.println("Generating order information...");
             this.generateReceipt(userItem, userType, userQty);
             System.out.println("Order receipt has been generated.");
@@ -134,14 +138,19 @@ public class OrderForm {
             //uncomment this later
             //db.removeFurniture(this.convertToItemsList(this.getOrder()), userItem);
             
+            System.out.println("\n\nThank you for using our service!");
+            
         } else {
-            System.out.println("Order cannot be fulfilled based on with current inventory.");
+            System.out.println("Order cannot be fulfilled based on current inventory.");
     		this.printSuggestedManufacturers(db, userItem);
+    		System.out.println("\nPlease check again when the inventory has been restocked.");
+    		System.out.println("\n\nThank you for using our service.");
         }
     }
 
     /**
-     * Method to generate order receipt
+     * Method to generate order receipt, using FileWriter objects.
+     * Called by createOrderForm(), no return value.
      * 
      * @param item - Category of item ordered
      * @param type - Type of item ordered
@@ -150,18 +159,18 @@ public class OrderForm {
     public void generateReceipt(String item, String type, int quantity){
     	try {
     		FileWriter writeReceipt = new FileWriter("orderform.txt");
-            writeReceipt.write("Furniture Order Form\n\n");
-            writeReceipt.write("Faculty Name:\n");
-            writeReceipt.write("Contact:\n");
-            writeReceipt.write("Date:\n\n");
-            writeReceipt.write("Original Request: " + type + " " + item + ", " + quantity + "\n\n");
-            writeReceipt.write("Items Ordered\n");
-            writeReceipt.write(this.orderedItems(this.convertToItemsList(this.getOrder())));
-            writeReceipt.write("\nTotal Price: $" + this.calculateOrderTotal(this.convertToItemsList(this.getOrder())));
+    		
+    		String message = "Furniture Order Form\n\nFaculty Name:\nContact:\n";
+    		message += "Date:\n\nOriginal Request: " + type + " " + item + ", " + quantity + "\n\n";
+    		message += "Items Ordered\n";
+    		message += this.orderedItems(this.convertToItemsList(this.getOrder()));
+    		message += "\nTotal Price: $" + this.calculateOrderTotal(this.convertToItemsList(this.getOrder()));
+    		
+            writeReceipt.write(message);
             writeReceipt.close();
     	}
     	catch(Exception e) {
-    		System.out.println("An error occurred when generating the receipt!");
+    		System.out.println("An error occurred when generating the receipt. Please run the program again.");
     	}
     }
     
@@ -206,8 +215,8 @@ public class OrderForm {
     }
 
     /**
-     * Method to convert an ArrayList containing combinations of ordered items to
-     * ArrayList containing all ordered items
+     * Method to convert an incoming ArrayList containing combinations
+     * of ordered items to an ArrayList containing all ordered items.
      * 
      * @param itemCombinations - ArrayList containing combinations of ordered items
      * @return ArrayList containing ordered items

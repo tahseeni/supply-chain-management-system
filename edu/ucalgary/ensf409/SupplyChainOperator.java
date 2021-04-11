@@ -292,6 +292,8 @@ public class SupplyChainOperator {
 		operator.promptUser();
 		operator.createInventoryHandler();
 		operator.createOrderForm();
+		
+		System.out.println("==================================================================");
 	}
 
-}
+} //end of class declaration, SupplyChainOperator
