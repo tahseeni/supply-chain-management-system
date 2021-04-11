@@ -23,7 +23,6 @@ public class Furniture {
 	private String type;
 	private String category;
 	private int price; 
-	private String manufactureID;
 	private char[] parts;
 
     public Furniture(String id, String type, String category, int price, char [] parts) {
