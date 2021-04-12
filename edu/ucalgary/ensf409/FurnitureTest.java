@@ -25,28 +25,28 @@ public class FurnitureTest {
 	//Test to compare the ID of the Furniture object
 	@Test
 	public void getIDTest() {
-		Furniture f = new Furniture("300", "mesh", 75, new char[] {'Y', 'N', 'Y'});
-		assertEquals("300", f.getID());
+		Furniture f = new Furniture("C3001", "mesh", 75, new char[] {'Y', 'N', 'Y'});
+		assertEquals("C3001", f.getID());
 	}
 	
 	//Test to compare the existent type of Furniture object
 	@Test
 	public void getTypeTest() {
-		Furniture f2 = new Furniture("300", "mesh", 75, new char[] {'Y', 'N', 'Y'});
+		Furniture f2 = new Furniture("C3002", "mesh", 75, new char[] {'Y', 'N', 'Y'});
 		assertEquals("mesh", f2.getType());
 	}
 	
 	//Test to compare the non-existent type of Furniture object
 	@Test
 	public void getTypeTest2() {
-		Furniture f3 = new Furniture("300", "mesh", 75, new char[] {'Y', 'N', 'Y'});
+		Furniture f3 = new Furniture("C3003", "mesh", 75, new char[] {'Y', 'N', 'Y'});
 		assertNotEquals("fridge", f3.getType());
 	}
 	
 	//Test to compare the price of the Furniture object
 	@Test
 	public void getPriceTest() {
-		Furniture f4 = new Furniture("300", "mesh", 75, new char[] {'Y', 'N', 'Y'});
+		Furniture f4 = new Furniture("C3004", "mesh", 75, new char[] {'Y', 'N', 'Y'});
 		assertEquals(75, f4.getPrice());
 	}
 	
@@ -54,7 +54,7 @@ public class FurnitureTest {
 	@Test
 	public void getPartsTest() {
 		char parts[] = new char[] {'Y', 'N', 'Y'};
-		Furniture f = new Furniture("300", "mesh", 75, new char[] {'Y', 'N', 'Y'});
+		Furniture f = new Furniture("C3005", "mesh", 75, new char[] {'Y', 'N', 'Y'});
 		assertArrayEquals(parts, f.getParts());
 	}
 	
@@ -62,7 +62,7 @@ public class FurnitureTest {
 	@Test
 	public void getPartsTest2() {
 		char parts[] = new char[] {'N', 'N', 'Y'};
-		Furniture f = new Furniture("300", "mesh", 75, new char[] {'Y', 'N', 'Y'});
+		Furniture f = new Furniture("C3006", "mesh", 75, new char[] {'Y', 'N', 'Y'});
 		assertNotEquals(parts, f.getParts());
 	}
 	

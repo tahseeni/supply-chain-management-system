@@ -44,6 +44,7 @@ public class InventoryHandlerTest {
 	
 	//Test for passing an empty ArrayList into generateCombinations()
 	//expect the return value to be empty
+	@Test
 	public void testGenerateCombinations2() {
 		ArrayList<Furniture> f3 = new ArrayList<Furniture>();
 		ArrayList<ArrayList<Furniture>> f4 = test.generateCombinations(f3);
@@ -58,37 +59,78 @@ public class InventoryHandlerTest {
 		
 	}
 	
-	//removeExcessCheck
-	@Test
-	public void testRemoveExcessCheck() {
-		ArrayList<ArrayList<Furniture>> f6 = test.generateCombinations(f);
-	}
-	
-	//removeExcessIndex
+	//removeExcessIndex test
 	@Test
 	public void testRemoveExcessIndex() {
+		ArrayList<ArrayList<Furniture>> f6 = new ArrayList<ArrayList<Furniture>>();
 		
+		//generate arbitrary combinations
+		ArrayList<Furniture> f7 = new ArrayList<Furniture>();
+		f7.add(f.get(0));
+		f7.add(f.get(3));
+		
+		ArrayList<Furniture> f8 = new ArrayList<Furniture>();
+		f8.add(f.get(0));
+		f8.add(f.get(1));
+		f8.add(f.get(3));
+		
+		f6.add(f7);
+		f6.add(f8);
+		
+		assertEquals("Excess index is at 1.", 1, test.removeExcessIndex(f6));
 	}
 	
 	//removeExcessCombinations
 	@Test
-	public void removeExcessCombinations() {
+	public void testRemoveExcessCombinations() {
+		ArrayList<ArrayList<Furniture>> f9 = new ArrayList<ArrayList<Furniture>>();
 		
-	}
-	
-	//combinationUsedCheck
-	@Test
-	public void combinationUsedCheck() {
+		//generate arbitrary combinations
+		ArrayList<Furniture> f10 = new ArrayList<Furniture>();
+		f10.add(f.get(0));
+		f10.add(f.get(3));
 		
+		ArrayList<Furniture> f11 = new ArrayList<Furniture>();
+		f11.add(f.get(0));
+		f11.add(f.get(1));
+		f11.add(f.get(3));
+		
+		f9.add(f10);
+		f9.add(f11);
+		
+		assertEquals("Size of ArrayList after removing excess combinations is 1.", 1, test.removeExcessCombinations(f9).size());
 	}
 	
 	//combinationUsedIndex
 	@Test
-	public void combinationUsedIndex() {
+	public void testCombinationUsedIndex() {
+		ArrayList<ArrayList<Furniture>> order = new ArrayList<ArrayList<Furniture>>();
+		ArrayList<Furniture> f12 = new ArrayList<Furniture>();
 		
+		f12.add(f.get(0));
+		f12.add(f.get(3));
+		order.add(f12);
+		
+		assertEquals("Used combination index is at index 0.", 0, test.combinationUsedIndex(test.getCombinations(), order));
 	}
 	
-	
 	//removeUsedCombinations
-
+	@Test
+	public void testRemoveUsedCombinations() {
+		ArrayList<ArrayList<Furniture>> order = new ArrayList<ArrayList<Furniture>>();
+		ArrayList<Furniture> f13 = new ArrayList<Furniture>();
+		
+		f13.add(f.get(0));
+		f13.add(f.get(3));
+		order.add(f13);
+		
+		assertEquals("The size of the ArrayList after removing used combinations is 0.", 0, test.removeUsedCombinations(test.getCombinations(), order).size());
+	}
+	
+	//test for getting the combinations
+	@Test
+	public void testGetCombinations() {
+		//we expect this to not be empty 
+		assertFalse(test.getCombinations().isEmpty());
+	}
 }
