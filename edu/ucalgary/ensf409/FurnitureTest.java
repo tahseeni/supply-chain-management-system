@@ -22,45 +22,47 @@ import static org.junit.Assert.*;
 
 public class FurnitureTest {
 	
-	
-	public FurnitureTest() {
-	}
-	
+	//Test to compare the ID of the Furniture object
 	@Test
 	public void getIDTest() {
-		Furniture f = new Furniture("300", "mesh", "chair", 75, new char[] {'Y', 'N', 'Y'});
+		Furniture f = new Furniture("300", "mesh", 75, new char[] {'Y', 'N', 'Y'});
 		assertEquals("300", f.getID());
 	}
 	
+	//Test to compare the existent type of Furniture object
 	@Test
 	public void getTypeTest() {
-		Furniture f = new Furniture("300", "mesh", "chair", 75, new char[] {'Y', 'N', 'Y'});
-		assertEquals("mesh", f.getType());
+		Furniture f2 = new Furniture("300", "mesh", 75, new char[] {'Y', 'N', 'Y'});
+		assertEquals("mesh", f2.getType());
 	}
 	
+	//Test to compare the non-existent type of Furniture object
 	@Test
 	public void getTypeTest2() {
-		Furniture f = new Furniture("300", "mesh", "chair", 75, new char[] {'Y', 'N', 'Y'});
-		assertNotEquals("fridge", f.getType());
+		Furniture f3 = new Furniture("300", "mesh", 75, new char[] {'Y', 'N', 'Y'});
+		assertNotEquals("fridge", f3.getType());
 	}
 	
+	//Test to compare the price of the Furniture object
 	@Test
 	public void getPriceTest() {
-		Furniture f = new Furniture("300", "mesh", "chair", 75, new char[] {'Y', 'N', 'Y'});
-		assertEquals(75, f.getPrice());
+		Furniture f4 = new Furniture("300", "mesh", 75, new char[] {'Y', 'N', 'Y'});
+		assertEquals(75, f4.getPrice());
 	}
 	
+	//Test to compare the parts of the Furniture object
 	@Test
 	public void getPartsTest() {
 		char parts[] = new char[] {'Y', 'N', 'Y'};
-		Furniture f = new Furniture("300", "mesh", "chair", 75, new char[] {'Y', 'N', 'Y'});
-		assertEquals(parts, f.getParts());
+		Furniture f = new Furniture("300", "mesh", 75, new char[] {'Y', 'N', 'Y'});
+		assertArrayEquals(parts, f.getParts());
 	}
 	
+	//Test for invalid parts comparison
 	@Test
 	public void getPartsTest2() {
-		char parts[] = new char[] {'Y', 'N', 'Y', 'N'};
-		Furniture f = new Furniture("300", "mesh", "chair", 75, new char[] {'Y', 'N', 'Y'});
+		char parts[] = new char[] {'N', 'N', 'Y'};
+		Furniture f = new Furniture("300", "mesh", 75, new char[] {'Y', 'N', 'Y'});
 		assertNotEquals(parts, f.getParts());
 	}
 	

@@ -50,8 +50,7 @@ public class InventoryHandler {
 	 *          type
 	 * @return ArrayList of combinations of furniture
 	 */
-	public ArrayList <ArrayList<Furniture>> generateCombinations(ArrayList <Furniture> f)
-    {
+	public ArrayList <ArrayList<Furniture>> generateCombinations(ArrayList <Furniture> f) {
 		ArrayList <ArrayList <Furniture>> frnt = new ArrayList<ArrayList <Furniture>>();	//ArrayList that will contain combinations of furniture (each combination is an individual ArrayList consisting of furniture)
 		ArrayList<Furniture> ft;	//ArrayList to hold one combination of furniture 
 		if(!f.isEmpty()){	//check if input ArrayList is empty
@@ -61,7 +60,8 @@ public class InventoryHandler {
 				for(int i = 0; i < f.size(); i++) //iterate through ArrayList of furniture
 				{		
 					if(f.get(i).getParts()[n-1] == 'Y')	//check if furniture item is valid with 1 total item
-					{							ft = new ArrayList<Furniture>(); //create new ArrayList to hold one combination of furniture
+					{	
+						ft = new ArrayList<Furniture>(); //create new ArrayList to hold one combination of furniture
 						ft.add(f.get(i));	//add furniture item to an ArrayList
 						frnt.add(ft);	//add the ArrayList consisting of one combination to the combinations ArrayList
 					}
@@ -265,40 +265,16 @@ public class InventoryHandler {
 	}
 
 	/**
-	 * Method to check if combinations ArrayList has excess/invalid combinations
+	 * Method to return index of excess/redundant combinations. 
+	 * For example, if combinations [C1 C2 C3] and [C1 C3] are valid,
+	 * the method will remove [C1 C2 C3] from the combinations ArrayList
 	 * 
-	 * @param frnt ArrayList with all of the combinations
-	 * @return boolean depending on whether the ArrayList has excess/invalid
-	 *         combinations
-	 */
-	public boolean removeExcessCheck(ArrayList<ArrayList<Furniture>> frnt) {
-		int k = 0;
-		for (int i = 0; i < frnt.size(); i++) {
-			for (int j = 0; j < frnt.size(); j++) {
-				if (frnt.get(i).size() < frnt.get(j).size()) {
-					for (k = 0; k < frnt.get(i).size(); k++) {
-						if (!frnt.get(j).contains(frnt.get(i).get(k))) {
-							break;
-						}
-					}
-					if (k == frnt.get(i).size()) {
-						return true;
-					}
-				}
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * Method to return index of excess/invalid combination
-	 * 
-	 * @param frnt ArrayList with all of the combinations
+	 * @param frnt - ArrayList with all of the combinations
 	 * @return index of excess/invalid combination
 	 */
 	public int removeExcessIndex(ArrayList<ArrayList<Furniture>> frnt) {
 		int k;
-		int index = 0;
+		int index = -1;
 		for (int i = 0; i < frnt.size(); i++) {
 			for (int j = 0; j < frnt.size(); j++) {
 				if (frnt.get(i).size() < frnt.get(j).size()) {
@@ -324,31 +300,10 @@ public class InventoryHandler {
 	 */
 	public ArrayList<ArrayList<Furniture>> removeExcessCombinations(ArrayList<ArrayList<Furniture>> f) {
 		ArrayList<ArrayList<Furniture>> fList = new ArrayList<ArrayList<Furniture>>(f);
-		while (removeExcessCheck(fList)) {
+		while (removeExcessIndex(fList) >= 0) {
 			fList.remove(removeExcessIndex(fList));
 		}
 		return fList;
-	}
-
-	/**
-	 * Method to check if combination has been used in an order
-	 * 
-	 * @param source - ArrayList with all of the combinations
-	 * @param order - ArrayList with all of the combinations used in an order
-	 * @return boolean depending on whether combination has been used in an order or
-	 *         not
-	 */
-	public boolean combinationUsedCheck(ArrayList<ArrayList<Furniture>> source, ArrayList<ArrayList<Furniture>> order) {
-		for (int i = 0; i < source.size(); i++) {
-			for (int j = 0; j < order.size(); j++) {
-				for (int k = 0; k < order.get(j).size(); k++) {
-					if (source.get(i).contains(order.get(j).get(k))) {
-						return true;
-					}
-				}
-			}
-		}
-		return false;
 	}
 
 	/**
@@ -359,7 +314,7 @@ public class InventoryHandler {
 	 * @return index of combination that has been used in order
 	 */
 	public int combinationUsedIndex(ArrayList<ArrayList<Furniture>> source, ArrayList<ArrayList<Furniture>> order) {
-		int index = 0;
+		int index = -1;
 		for (int i = 0; i < source.size(); i++) {
 			for (int j = 0; j < order.size(); j++) {
 				for (int k = 0; k < order.get(j).size(); k++) {
@@ -382,7 +337,7 @@ public class InventoryHandler {
 	public ArrayList<ArrayList<Furniture>> removeUsedCombinations(ArrayList<ArrayList<Furniture>> source,
 			ArrayList<ArrayList<Furniture>> order) {
 		ArrayList<ArrayList<Furniture>> fList = new ArrayList<ArrayList<Furniture>>(source);
-		while (combinationUsedCheck(fList, order) == true) {
+		while (combinationUsedIndex(fList, order) >= 0) {
 			fList.remove(combinationUsedIndex(fList, order));
 		}
 		return fList;

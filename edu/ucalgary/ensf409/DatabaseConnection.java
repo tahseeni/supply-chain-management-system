@@ -120,13 +120,15 @@ public class DatabaseConnection {
                 for(int i = 0; i < partsNum; i++) {
 					parts[i] = line.getString(i + 3).charAt(0);
                 }
-                Furniture newItem = new Furniture(ID, type, category, price, parts);
+                
+                //parse into a Furniture item
+                Furniture newItem = new Furniture(ID, type, price, parts);
                 furniture.add(newItem);
             }
             stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("There was an issue with getting the furniture table. Exiting program.");
+            System.out.println("There was an issue with getting the furniture from the table. Exiting program.");
             System.exit(1);
         }
         return furniture;
@@ -165,7 +167,7 @@ public class DatabaseConnection {
 	 * @param category - Item category that is ordered
 	 * @return ArrayList of manufacturers
 	 */
-	public ArrayList<String> getSuggestedManufacturers(String category) {
+	public ArrayList<String> getManufacturers(String category) {
 		ArrayList<String> m = new ArrayList<String>();
 		
 		try {

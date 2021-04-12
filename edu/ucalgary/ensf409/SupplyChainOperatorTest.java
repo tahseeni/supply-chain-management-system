@@ -1,5 +1,8 @@
 package edu.ucalgary.ensf409;
 
+import static org.junit.Assert.*;
+import java.util.ArrayList;
+
 /**
  * @author Tahseen Intesar <a href="mailto:tahseen.intesar@ucalgary.ca">
  *         tahseen.intesar@ucalgary.ca</a>
@@ -20,7 +23,12 @@ package edu.ucalgary.ensf409;
 public class SupplyChainOperatorTest {
 
 	public SupplyChainOperatorTest() {
-		
 	}
+	
+	//isValidItem
+	
+	//setFurnitureType
+	
+	//setFurnitureQuantity
 	
 }
