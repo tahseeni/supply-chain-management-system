@@ -98,7 +98,7 @@ public class InventoryTest {
 		f9.add(f10);
 		f9.add(f11);
 		
-		assertEquals("Size of ArrayList after removing excess combinations is 1.", 1, test.removeExcessCombinations(f9).size());
+		assertEquals("Size of ArrayList after removing excess combinations is 1.", 1, test.removeInvalidCombinations(f9).size());
 	}
 	
 	//combinationUsedIndex

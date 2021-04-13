@@ -31,7 +31,7 @@ public class Inventory {
 	 * from database
 	 */
 	public Inventory(ArrayList<Furniture> furnitureData) {
-		this.setCombinations(removeExcessCombinations(removeInvalidCombination(generateCombinations(furnitureData))));
+		this.setCombinations(removeInvalidCombinations(generateCombinations(furnitureData)));
 	}
 
 	/**
@@ -58,13 +58,24 @@ public class Inventory {
 		ArrayList<Furniture> ft; // ArrayList to hold one combination of furniture
 		if (!f.isEmpty()) { // check if input ArrayList is empty
 			int[] ind = new int[f.size()];
-			for (int i = 0; i < f.size(); i++) {
+
+			for(int i = 0; i < f.size(); i++)
+			{
 				ind[i] = i;
 			}
-			List<int[]> in = new ArrayList<>(this.all(f.get(0).getParts().length, ind));
-			for (int i = 0; i < in.size(); i++) {
+			List <int[]> in = new ArrayList<>();
+
+			for(int i = 0; i < f.get(0).getParts().length; i ++)
+			{
+				int r = i + 1;
+				combination(ind, ind.length, r, in);
+			}
+
+			for (int i = 0; i < in.size(); i++) 
+			{
 				ft = new ArrayList<Furniture>();
-				for (int j = 0; j < in.get(i).length; j++) {
+				for (int j = 0; j < in.get(i).length; j++) 
+				{
 					ft.add(f.get(in.get(i)[j]));
 				}
 				frnt.add(ft);
@@ -152,8 +163,13 @@ public class Inventory {
 	 * @param f ArrayList with all of the combinations
 	 * @return ArrayList without excess/invalid combinations
 	 */
-	public ArrayList<ArrayList<Furniture>> removeExcessCombinations(ArrayList<ArrayList<Furniture>> f) {
+	public ArrayList<ArrayList<Furniture>> removeInvalidCombinations(ArrayList<ArrayList<Furniture>> f) {
 		ArrayList<ArrayList<Furniture>> fList = new ArrayList<ArrayList<Furniture>>(f);
+
+		while (indexInvalid(fList) != -1) {
+			fList.remove(indexInvalid(fList));
+		}
+
 		while (removeExcessIndex(fList) >= 0) {
 			fList.remove(removeExcessIndex(fList));
 		}
@@ -216,45 +232,11 @@ public class Inventory {
 		this.combinations = new ArrayList<ArrayList<Furniture>>(fr);
 	}
 
-	public int[] getSubset(int[] input, int[] subset) {
-		int[] result = new int[subset.length];
-		for (int i = 0; i < subset.length; i++) {
-			result[i] = input[subset[i]];
-		}
-		return result;
-	}
-
-	public List<int[]> all(int n, int[] input) {
-		List<int[]> subsets = new ArrayList<>();
-
-		for (int j = 0; j < n; j++) {
-			int k = j + 1;
-			int[] s = new int[k]; // store indices here
-			// pointing to elements in input array
-
-			if (k <= input.length) {
-				// first index sequence: 0, 1, 2, ...
-				for (int i = 0; (s[i] = i) < k - 1; i++);
-				subsets.add(getSubset(input, s));
-				while(true) {
-					int i;
-					// find position of item that can be incremented
-					for (i = k - 1; i >= 0 && s[i] == input.length - k + i; i--);
-					if (i < 0) {
-						break;
-					}
-					s[i]++; // increment this item's value
-					while (++i < k) { 
-						// fill up remaining items
-						s[i] = s[i - 1] + 1;
-					}
-					subsets.add(getSubset(input, s));
-				}
-			}
-		}
-		return subsets;
-	}
-
+	/**
+	 * indexInvalid returns 
+	 * @param frnt
+	 * @return
+	 */
 	public int indexInvalid(ArrayList<ArrayList<Furniture>> frnt) {
 		int count = 0;
 		int n = frnt.get(0).get(0).getParts().length;
@@ -281,12 +263,55 @@ public class Inventory {
 		return -1;
 	}
 
-	public ArrayList<ArrayList<Furniture>> removeInvalidCombination(ArrayList<ArrayList<Furniture>> frnt) {
-		ArrayList<ArrayList<Furniture>> fList = new ArrayList<ArrayList<Furniture>>(frnt);
-		while (indexInvalid(fList) != -1) {
-			fList.remove(indexInvalid(fList));
-		}
-		return fList;
+	/**
+	 * conbinationUtil() is a helper method that uses recursion to
+	 * generate the combinations
+	 * 
+	 * @param arr
+	 * @param data
+	 * @param start
+	 * @param end
+	 * @param index
+	 * @param r
+	 * @param it
+	 */
+	public void combinationUtil(int arr[], int data[], int start,
+                                int end, int index, int r, List <int[]> it)
+    {
+		int[] in = new int[r];
+        // Current combination is ready to be printed, print it
+        if (index == r) {
+            for (int j = 0; j < r; j++) {
+				in[j] = data[j];
+			}
+			it.add(in);
+            return;
+        }
+
+        // replace index with all possible elements. The condition
+        // "end-i+1 >= r-index" makes sure that including one element
+        // at index will make a combination with remaining elements
+        // at remaining positions
+        for (int i = start; i <= end && end - i + 1 >= r - index; i++) {
+            data[index] = arr[i];
+            combinationUtil(arr, data, i+1, end, index + 1, r, it);
+        }
 	}
+	
+	/**
+	 * 
+	 * 
+	 * @param arr
+	 * @param n
+	 * @param r
+	 * @param it
+	 */
+	public void combination(int arr[], int n, int r, List <int[]> it) {
+        // A temporary array to store all combination one by one
+        int data[] = new int[r];
+ 
+        // Print all combination using temporary array 'data[]'
+        combinationUtil(arr, data, 0, n-1, 0, r, it);
+    }	
 
 } // end of class declaration, InventoryHandler

@@ -36,10 +36,10 @@ public class SQLConnectorTest {
 	public void testGetValidFurniture1() {
 		ArrayList<Furniture> f = new ArrayList<>();
 		
-		f.add(new Furniture("C9890", "Mesh", 50, new char[] {'N', 'Y', 'N', 'Y'}));
+		f.add(new Furniture("C0942", "Mesh", 175, new char[] {'Y', 'N', 'Y', 'Y'}));
 		f.add(new Furniture("C6748", "Mesh", 75, new char[] {'Y', 'N', 'N', 'N'}));
 		f.add(new Furniture("C8138", "Mesh", 75, new char[] {'N', 'N', 'Y', 'N'}));
-		f.add(new Furniture("C0942", "Mesh", 175, new char[] {'Y', 'N', 'Y', 'Y'}));
+		f.add(new Furniture("C9890", "Mesh", 50, new char[] {'N', 'Y', 'N', 'Y'}));
 		
 		assertEquals(f.get(0).getID(), test.getFurniture("CHAIR", "Mesh").get(0).getID());
 	}
@@ -48,11 +48,11 @@ public class SQLConnectorTest {
 	@Test
 	public void testGetValidFurniture2() {
 		ArrayList<Furniture> f = new ArrayList<>();
-		char parts1[] = {'N', 'N', 'Y'};
-		char parts2[] = {'Y', 'Y', 'N'};
+		char parts1[] = {'N', 'Y', 'N'};
+		char parts2[] = {'Y', 'N', 'Y'};
 		
-		f.add(new Furniture("D3682", "Adjustable", 50, parts1));
-		f.add(new Furniture("D7373", "Adjustable", 350, parts2));
+		f.add(new Furniture("D1030", "Adjustable", 150, parts1));
+		f.add(new Furniture("D2746", "Adjustable", 250, parts2));
 		
 		assertArrayEquals(f.get(0).getParts(), test.getFurniture("DESK", "Adjustable").get(0).getParts());
 	}

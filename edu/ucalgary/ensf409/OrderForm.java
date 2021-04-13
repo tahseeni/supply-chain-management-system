@@ -33,7 +33,7 @@ public class OrderForm {
      * create order object
      */
     public OrderForm(Inventory inv) {
-        this.setInventoryHandler(inv);
+        this.setInventory(inv);
         this.order = new ArrayList<ArrayList<Furniture>>();
     }
 
@@ -66,7 +66,7 @@ public class OrderForm {
     }
 
     /**
-     * Method to set InventoryHandler object equal to input InventoryHandler object
+     * Method to set Inventory object equal to input InventoryHandler object
      * 
      * @param inv - InventoryHandler object containing combinations of furniture read
      *            from database file

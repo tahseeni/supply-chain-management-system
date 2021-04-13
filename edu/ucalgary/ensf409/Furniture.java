@@ -18,9 +18,7 @@ package edu.ucalgary.ensf409;
  */
 
 /**
- * 
  * Furniture class to store entries from the database
- * 
  */
 public class Furniture {
 
@@ -46,30 +44,58 @@ public class Furniture {
 		this.parts = parts;
 	}
 
+	/**
+	 * Getter method for the Furniture ID
+	 * @return this.id
+	 */
 	public String getID() {
-		return id;
+		return this.id;
 	}
 
+	/**
+	 * Getter method for the Furniture Type
+	 * @return this.type
+	 */
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
+	/**
+	 * Getter method for the Furniture Price
+	 * @return this.price
+	 */
 	public int getPrice() {
-		return price;
+		return this.price;
 	}
 
+	/**
+	 * Getter method for the Furniture Parts
+	 * @return this.parts
+	 */
 	public char[] getParts() {
 		return this.parts;
 	}
 
+	/**
+	 * Setter method for the Furniture ID
+	 * @param id - ID from database
+	 */
 	public void setID(String id) {
 		this.id = id;
 	}
 
+	/**
+	 * Setter method for the Furniture ID
+	 * @param type - furniture type from database
+	 */
 	public void setType(String type) {
 		this.type = type;
 	}
 
+	/**
+	 * Setter method for the Furniture ID
+	 * @param price - furniture price from database
+	 */
 	public void setPrice(int price) {
 		this.price = price;
 	}
