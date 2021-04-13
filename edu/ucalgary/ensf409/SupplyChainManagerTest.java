@@ -21,8 +21,8 @@ import org.junit.*;
  * @since 1.0
  */
 
-public class SupplyChainOperatorTest {
-	SupplyChainOperator test = new SupplyChainOperator();
+public class SupplyChainManagerTest {
+	SupplyChainManager test = new SupplyChainManager();
 	
 	//isValidItem -> input of 1 should pass 1
 	@Test

@@ -15,28 +15,31 @@ import java.io.IOException;
  * @author Stalin D Cunha<a href="mailto:stalin.dcunha@ucalgary.ca">
  *         stalin.dcunha@ucalgary.ca</a>
  *         
- * @version 1.1
+ * @version 1.2
  * @since 1.0
  */
 
+
 /**
- * SupplyChainOperator is the main class, which handles program execution
+ * SupplyChainManager is the main class, which handles program execution
  * and database connectivity. The class will process the user inputs.
  */
-public class SupplyChainOperator {
+public class SupplyChainManager {
 	private String userItem = "";
 	private String userType = "";
 	private int userQty;
 	
-	private DatabaseConnection driver;
-	private InventoryHandler inventory;
+	private SQLConnector driver;
+	private Inventory inventory;
 	private OrderForm receipt;
 
 	/**
 	 * Constructor for SupplyChainOperator. Aims to connect to mySQL server.
+	 * Passes a Scanner object with the System's input stream
 	 */
-	public SupplyChainOperator() {
-		this.driver = new DatabaseConnection();
+	public SupplyChainManager() {
+		Scanner databasePrompter = new Scanner(System.in);
+		this.driver = new SQLConnector(databasePrompter);
 	}
 	
 	/**
@@ -108,10 +111,9 @@ public class SupplyChainOperator {
 			
 			} while(this.userType == null);
 			
-			
 			//check for furniture quantity
 			do {
-				System.out.print("\nPlease enter the quantity: ");
+				System.out.print("Please enter the quantity: ");
 				userQty = input.nextInt();
 				this.userQty = this.setFurnitureQuantity(userQty);
 				
@@ -134,7 +136,7 @@ public class SupplyChainOperator {
 	 * No arguments taken, no return value.
 	 */
 	public void createInventoryHandler() {
-		this.inventory = new InventoryHandler(driver.getFurniture(this.getUserItem(), this.getUserType()));
+		this.inventory = new Inventory(driver.getFurniture(this.getUserItem(), this.getUserType()));
 	}
 	
 	/**
@@ -211,13 +213,12 @@ public class SupplyChainOperator {
 	 * 		   returns the correctly formatted typeChoice
 	 */
 	public String setFurnitureType(String item, String typeChoice) {
-		
 		//formats the user's input to start with an upper case letter
 		//followed by all lower case letters
 		typeChoice = typeChoice.substring(0,1).toUpperCase() + typeChoice.substring(1).toLowerCase();
 		
 		if(driver.checkFurnitureType(item, typeChoice)) {
-			System.out.println("\nThis furniture type is available in the database.");
+			System.out.println("\nSome components of this furniture type are available in the database.");
 		}
 		else {
 			System.out.println("Please input one of the furniture types listed above.");
@@ -283,7 +284,7 @@ public class SupplyChainOperator {
 	 * @throws Exception
 	 */
 	public static void main(String args[]) throws Exception {
-		SupplyChainOperator operator = new SupplyChainOperator();
+		SupplyChainManager operator = new SupplyChainManager();
 
 		System.out.println("==================================================================");
 		System.out.println("Welcome to the Furniture Component Reusability System!");
@@ -292,6 +293,7 @@ public class SupplyChainOperator {
 		operator.promptUser();
 		operator.createInventoryHandler();
 		operator.createOrderForm();
+		operator.driver.close();
 		
 		System.out.println("==================================================================");
 	}

@@ -22,17 +22,17 @@ import java.util.ArrayList;
 
 import org.junit.*;
 
-public class InventoryHandlerTest {
-	static InventoryHandler test;
+public class InventoryTest {
+	static Inventory test;
 	ArrayList<Furniture> f = new ArrayList<>();
 	
 	//constructor that initializes all of the mesh chair entries
-	public InventoryHandlerTest() {
+	public InventoryTest() {
 		f.add(new Furniture("C9890", "Mesh", 50, new char[] {'N', 'Y', 'N', 'Y'}));
 		f.add(new Furniture("C6748", "Mesh", 75, new char[] {'Y', 'N', 'N', 'N'}));
 		f.add(new Furniture("C8138", "Mesh", 75, new char[] {'N', 'N', 'Y', 'N'}));
 		f.add(new Furniture("C0942", "Mesh", 175, new char[] {'Y', 'N', 'Y', 'Y'}));
-		test = new InventoryHandler(f);
+		test = new Inventory(f);
 	}
 	
 	//Test to ensure that combinations are made, ie. not empty ArrayList

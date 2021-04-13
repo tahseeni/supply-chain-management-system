@@ -25,14 +25,14 @@ import java.io.IOException;
  * OrderForm class handles order data and creates form/receipt
  */
 public class OrderForm {
-    private InventoryHandler inventory;
+    private Inventory inventory;
     private ArrayList<ArrayList<Furniture>> order;
 
     /**
-     * OrderForm constructor to initialize InventoryHandler object and create order
-     * object
+     * OrderForm constructor to initialize InventoryHandler object and 
+     * create order object
      */
-    public OrderForm(InventoryHandler inv) {
+    public OrderForm(Inventory inv) {
         this.setInventoryHandler(inv);
         this.order = new ArrayList<ArrayList<Furniture>>();
     }
@@ -51,7 +51,7 @@ public class OrderForm {
      * 
      * @return InventoryHandler object
      */
-    public InventoryHandler getInventory() {
+    public Inventory getInventory() {
         return this.inventory;
     }
 
@@ -71,7 +71,7 @@ public class OrderForm {
      * @param inv - InventoryHandler object containing combinations of furniture read
      *            from database file
      */
-    public void setInventoryHandler(InventoryHandler inv) {
+    public void setInventory(Inventory inv) {
         this.inventory = inv;
     }
 
@@ -103,13 +103,13 @@ public class OrderForm {
         ArrayList<ArrayList<Furniture>> remainingCombinations = new ArrayList<ArrayList<Furniture>>(f);
         ArrayList<ArrayList<Furniture>> order = new ArrayList<ArrayList<Furniture>>();
 
-        for (int i = 0; i < n; i++) {
+        for(int i = 0; i < n; i++) {
             if (!remainingCombinations.isEmpty()) {
                 int index = this.inventory.findCheapest(remainingCombinations);
                 order.add(remainingCombinations.get(index));
                 remainingCombinations = this.inventory.removeUsedCombinations(remainingCombinations, order);
             } else {
-                break;
+                break; //all combinations have been used in the order
             }
         }
         return order;
@@ -126,9 +126,10 @@ public class OrderForm {
      * @param userType - Type of item ordered
      * @param userItem - Category of item ordered
      */
-    public void createOrderForm(DatabaseConnection db, int userQty, String userType, String userItem) {
+    public void createOrderForm(SQLConnector db, int userQty, String userType, String userItem) {
         System.out.println("\nUser has selected: " + userQty + " " + userType + " " + userItem);
         this.setOrder(generateOrder(userQty, this.getInventory().getCombinations()));
+        
         if (this.getOrder().size() == userQty) {
             System.out.println("\n\nOrder is valid. It will now be processed.");
             System.out.println("Generating order information...");
@@ -181,9 +182,9 @@ public class OrderForm {
      * @param db - DatabaseConnector object passed 
      * @param item - Category of item ordered
      */
-    public void printSuggestedManufacturers(DatabaseConnection db, String item) {
+    public void printSuggestedManufacturers(SQLConnector db, String item) {
     	ArrayList<String> manufacturers = new ArrayList<String>();
-    	manufacturers = db.getSuggestedManufacturers(item);
+    	manufacturers = db.getManufacturers(item);
     	
     	//print message 
     	String message = "\nSuggested manufacturers are ";

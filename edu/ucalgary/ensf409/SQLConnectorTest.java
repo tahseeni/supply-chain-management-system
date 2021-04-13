@@ -20,16 +20,15 @@ package edu.ucalgary.ensf409;
 import org.junit.*;
 import org.hamcrest.core.IsNot;
 import static org.junit.Assert.*;
-
-import java.sql.*;
 import java.util.*;
 
-public class DatabaseConnectionTest {
-	static DatabaseConnection test;
+public class SQLConnectorTest {
+	static SQLConnector test;
 	
 	@BeforeClass
 	public static void init() {
-		test = new DatabaseConnection();
+		Scanner databasePrompter = new Scanner(System.in);
+		test = new SQLConnector(databasePrompter);
 	}
 	
 	//Test if all mesh chair entries are returned from the database, based on ID
