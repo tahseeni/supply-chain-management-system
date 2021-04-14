@@ -43,7 +43,7 @@ public class InventoryTest {
 	}
 	
 	//Test for passing an empty ArrayList into generateCombinations()
-	//expect the return value to be empty
+	//expect the returned array to be empty
 	@Test
 	public void testGenerateCombinations2() {
 		ArrayList<Furniture> f3 = new ArrayList<Furniture>();
@@ -56,7 +56,6 @@ public class InventoryTest {
 	public void testFindCheapest() {
 		ArrayList<ArrayList<Furniture>> f5 = test.generateCombinations(f);
 		assertEquals("Cheapest index for a mesh chair is at 0.", 0, test.findCheapest(f5));
-		
 	}
 	
 	//removeExcessIndex test
@@ -77,7 +76,7 @@ public class InventoryTest {
 		f6.add(f7);
 		f6.add(f8);
 		
-		assertEquals("Excess index is at 1.", 1, test.removeExcessIndex(f6));
+		assertEquals("Excess index is at 1.", 1, test.excessIndex(f6));
 	}
 	
 	//removeExcessCombinations
@@ -101,9 +100,9 @@ public class InventoryTest {
 		assertEquals("Size of ArrayList after removing excess combinations is 1.", 1, test.removeInvalidCombinations(f9).size());
 	}
 	
-	//combinationUsedIndex
+	//test if the combination index is located at index 0 
 	@Test
-	public void testCombinationUsedIndex() {
+	public void testUsedIndex() {
 		ArrayList<ArrayList<Furniture>> order = new ArrayList<ArrayList<Furniture>>();
 		ArrayList<Furniture> f12 = new ArrayList<Furniture>();
 		
@@ -111,7 +110,7 @@ public class InventoryTest {
 		f12.add(f.get(3));
 		order.add(f12);
 		
-		assertEquals("Used combination index is at index 0.", 0, test.combinationUsedIndex(test.getCombinations(), order));
+		assertEquals("Used combination index is at index 0.", 0, test.usedIndex(test.getCombinations(), order));
 	}
 	
 	//removeUsedCombinations
@@ -124,7 +123,8 @@ public class InventoryTest {
 		f13.add(f.get(3));
 		order.add(f13);
 		
-		assertEquals("The size of the ArrayList after removing used combinations is 0.", 0, test.removeUsedCombinations(test.getCombinations(), order).size());
+		assertEquals("The size of the ArrayList after removing used combinations is 0.", 
+				0, test.removeFromInventory(test.getCombinations(), order).size());
 	}
 	
 	//test for getting the combinations

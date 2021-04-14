@@ -2,7 +2,6 @@ package edu.ucalgary.ensf409;
 
 import java.util.ArrayList;
 import java.io.FileWriter;
-import java.io.IOException;
 
 /**
  * @author Tahseen Intesar <a href="mailto:tahseen.intesar@ucalgary.ca">
@@ -107,7 +106,7 @@ public class OrderForm {
             if (!remainingCombinations.isEmpty()) {
                 int index = this.inventory.findCheapest(remainingCombinations);
                 order.add(remainingCombinations.get(index));
-                remainingCombinations = this.inventory.removeUsedCombinations(remainingCombinations, order);
+                remainingCombinations = this.inventory.removeFromInventory(remainingCombinations, order);
             } else {
                 break; //all combinations have been used in the order
             }
@@ -136,7 +135,7 @@ public class OrderForm {
             this.generateReceipt(userItem, userType, userQty);
             System.out.println("The order receipt has been generated.");
             
-            //uncomment when turning it in
+            //uncomment this later
             db.removeFurniture(this.convertToItemsList(this.getOrder()), userItem);
             
             System.out.println("\n\nThank you for using our service!");

@@ -43,46 +43,47 @@ public class Inventory {
 	}
 
 	/**
-	 * Method to generate combinations for furniture that can be combined to make a
-	 * full item to be sold to the user
-	 * 
-	 * @param f is an ArrayList with furniture data from a specific category and
-	 *          type
-	 * @return ArrayList of combinations of furniture
-	 */
-	public ArrayList<ArrayList<Furniture>> generateCombinations(ArrayList<Furniture> f) {
-		// ArrayList that will contain combinations of furniture 
-		// (each combination is an individual ArrayList consisting of furniture)
-		ArrayList<ArrayList<Furniture>> frnt = new ArrayList<ArrayList<Furniture>>();
+     * Method to generate combinations for furniture
+     * @param f is an ArrayList with furniture items from a specific category and type
+     * @return ArrayList of combinations of furniture
+     */
+    public ArrayList <ArrayList<Furniture>> generateCombinations(ArrayList <Furniture> f)
+    {
+		ArrayList <ArrayList <Furniture>> frnt = new ArrayList<ArrayList <Furniture>>();	//ArrayList that will contain combinations of furniture 
+		ArrayList<Furniture> ft;	//ArrayList to hold one combination of furniture 
+		List <Integer> ints = new ArrayList<Integer>();	//ArrayList that holds indices of furniture objects
+		if(!f.isEmpty()) //check if furniture data from the database has been transferred correctly
+		{
+			int n = f.get(0).getParts().length;	//number of parts 
 
-		ArrayList<Furniture> ft; // ArrayList to hold one combination of furniture
-		if (!f.isEmpty()) { // check if input ArrayList is empty
-			int[] ind = new int[f.size()];
-
-			for(int i = 0; i < f.size(); i++)
-			{
-				ind[i] = i;
+			//copy indices of furniture objects to ArrayList of integers
+			for(int i = 0; i < f.size(); i++) {
+				 ints.add(i);
 			}
-			List <int[]> in = new ArrayList<>();
-
-			for(int i = 0; i < f.get(0).getParts().length; i ++)
+			
+			List <List<Integer>> in = new ArrayList<>();	//ArrayList to hold combinations of integers
+	
+			//loop will run n times and will generate combinations of indices
+			//combinations will have a minimum size of 1 and a maximum size of n 
+			for(int i = 0; i < n; i ++)	
 			{
-				int r = i + 1;
-				combination(ind, ind.length, r, in);
+				int[] temp = new int[i+1]; //array that is used to store a combination of integers
+				combineInts(ints, temp, 0, n - 1, 0, i + 1, in); //call function to create combinations of indices that are of size i + 1
 			}
-
-			for (int i = 0; i < in.size(); i++) 
+	
+			//create combinations of furniture based on combinations of indices 
+			for(int i = 0; i < in.size(); i++)
 			{
-				ft = new ArrayList<Furniture>();
-				for (int j = 0; j < in.get(i).length; j++) 
+				ft = new ArrayList<Furniture>();	//create new furniture combination
+				for(int j = 0; j < in.get(i).size(); j++)	
 				{
-					ft.add(f.get(in.get(i)[j]));
+					ft.add(f.get(in.get(i).get(j)));	//add furniture object at specified index to an ArrayList holding one combination
 				}
-				frnt.add(ft);
-			}
+				frnt.add(ft);	//add combination to an ArrayList holding all combinations
+			}	
 		}
 		return frnt;
-	}
+    }
 
 	/**
 	 * Method to return index of cheapest combination within an ArrayList with all
@@ -137,7 +138,7 @@ public class Inventory {
 	 * @param frnt - ArrayList with all of the combinations
 	 * @return index of excess combinations; returns -1 if not found
 	 */
-	public int removeExcessIndex(ArrayList<ArrayList<Furniture>> frnt) {
+	public int excessIndex(ArrayList<ArrayList<Furniture>> frnt) {
 		int k;
 		int index = -1;
 		for (int i = 0; i < frnt.size(); i++) {
@@ -158,86 +159,13 @@ public class Inventory {
 	}
 
 	/**
-	 * Method to return an ArrayList without excess/invalid combinations
+	 * Method to return index of invalid combinations that do not
+	 * contain all of the parts required to make a complete furniture item.
 	 * 
-	 * @param f ArrayList with all of the combinations
-	 * @return ArrayList without excess/invalid combinations
+	 * @param frnt - ArrayList with all of the combinations
+	 * @return index of invalid combinations; returns -1 if not found
 	 */
-	public ArrayList<ArrayList<Furniture>> removeInvalidCombinations(ArrayList<ArrayList<Furniture>> f) {
-		ArrayList<ArrayList<Furniture>> fList = new ArrayList<ArrayList<Furniture>>(f);
-
-		while (indexInvalid(fList) != -1) {
-			fList.remove(indexInvalid(fList));
-		}
-
-		while (removeExcessIndex(fList) >= 0) {
-			fList.remove(removeExcessIndex(fList));
-		}
-		return fList;
-	}
-
-	/**
-	 * Helper method to return index of combination that has been used in the order.
-	 * 
-	 * @param source - ArrayList with all of the combinations
-	 * @param order  - ArrayList with all of the combinations used in an order
-	 * @return index of combination that has been used in order, returns -1 if not
-	 *         found
-	 */
-	public int combinationUsedIndex(ArrayList<ArrayList<Furniture>> source, ArrayList<ArrayList<Furniture>> order) {
-		int index = -1;
-		for (int i = 0; i < source.size(); i++) {
-			for (int j = 0; j < order.size(); j++) {
-				for (int k = 0; k < order.get(j).size(); k++) {
-					if (source.get(i).contains(order.get(j).get(k))) {
-						return i;
-					}
-				}
-			}
-		}
-		return index;
-	}
-
-	/**
-	 * Method to return an ArrayList without used combinations
-	 * 
-	 * @param source - ArrayList with all of the combinations
-	 * @param order  - ArrayList with all of the combinations used in an order
-	 * @return ArrayList without combinations used in an order
-	 */
-	public ArrayList<ArrayList<Furniture>> removeUsedCombinations(ArrayList<ArrayList<Furniture>> source,
-			ArrayList<ArrayList<Furniture>> order) {
-		ArrayList<ArrayList<Furniture>> fList = new ArrayList<ArrayList<Furniture>>(source);
-		while (combinationUsedIndex(fList, order) >= 0) {
-			fList.remove(combinationUsedIndex(fList, order));
-		}
-		return fList;
-	}
-
-	/**
-	 * Method to return ArrayList with combinations
-	 * 
-	 * @return ArrayList with combinations
-	 */
-	public ArrayList<ArrayList<Furniture>> getCombinations() {
-		return this.combinations;
-	}
-
-	/**
-	 * Method to set an ArrayList with all combinations
-	 * 
-	 * @param fr - ArrayList with all combinations
-	 */
-	public void setCombinations(ArrayList<ArrayList<Furniture>> fr) {
-		this.combinations = new ArrayList<ArrayList<Furniture>>(fr);
-	}
-
-	/**
-	 * indexInvalid returns 
-	 * @param frnt
-	 * @return
-	 */
-	public int indexInvalid(ArrayList<ArrayList<Furniture>> frnt) {
+	public int invalidIndex(ArrayList<ArrayList<Furniture>> frnt) {
 		int count = 0;
 		int n = frnt.get(0).get(0).getParts().length;
 		for (int i = 0; i < frnt.size(); i++) {
@@ -264,54 +192,115 @@ public class Inventory {
 	}
 
 	/**
-	 * conbinationUtil() is a helper method that uses recursion to
-	 * generate the combinations
+	 * Method to return an ArrayList without excess/invalid combinations
 	 * 
-	 * @param arr
-	 * @param data
-	 * @param start
-	 * @param end
-	 * @param index
-	 * @param r
-	 * @param it
+	 * @param f ArrayList with all of the combinations
+	 * @return ArrayList without excess/invalid combinations
 	 */
-	public void combinationUtil(int arr[], int data[], int start,
-                                int end, int index, int r, List <int[]> it)
-    {
-		int[] in = new int[r];
-        // Current combination is ready to be printed, print it
-        if (index == r) {
-            for (int j = 0; j < r; j++) {
-				in[j] = data[j];
+	public ArrayList<ArrayList<Furniture>> removeInvalidCombinations(ArrayList<ArrayList<Furniture>> f) {
+		ArrayList<ArrayList<Furniture>> fList = new ArrayList<ArrayList<Furniture>>(f);
+
+		while (invalidIndex(fList) != -1) {
+			fList.remove(invalidIndex(fList));
+		}
+
+		while (excessIndex(fList) != -1) {
+			fList.remove(excessIndex(fList));
+		}
+		return fList;
+	}
+
+	/**
+	 * Helper method to return index of combination that has been used in the order.
+	 * 
+	 * @param source - ArrayList with all of the combinations
+	 * @param order  - ArrayList with all of the combinations used in an order
+	 * @return index of combination that has been used in order, returns -1 if not
+	 *         found
+	 */ 
+	public int usedIndex(ArrayList<ArrayList<Furniture>> source, ArrayList<ArrayList<Furniture>> order) {
+		int index = -1;
+		for (int i = 0; i < source.size(); i++) {
+			for (int j = 0; j < order.size(); j++) {
+				for (int k = 0; k < order.get(j).size(); k++) {
+					if (source.get(i).contains(order.get(j).get(k))) {
+						return i;
+					}
+				}
 			}
-			it.add(in);
+		}
+		return index;
+	}
+
+	/**
+	 * Method to return an ArrayList containing combinations that haven't been used in an order
+	 * 
+	 * @param source - ArrayList with all of the combinations in the inventory
+	 * @param order  - ArrayList with all of the combinations used in an order
+	 * @return ArrayList containing combinations that haven't been used in an order
+	 */
+	public ArrayList<ArrayList<Furniture>> removeFromInventory(ArrayList<ArrayList<Furniture>> source,
+			ArrayList<ArrayList<Furniture>> order) {
+		ArrayList<ArrayList<Furniture>> fList = new ArrayList<ArrayList<Furniture>>(source);
+		while (usedIndex(fList, order) != -1) {
+			fList.remove(usedIndex(fList, order));
+		}
+		return fList;
+	}
+
+	/**
+     * Method to generate combinations of integers of size k
+     * 
+	 * @param source -	input ArrayList of integers
+	 * @param temp	 -	array used to store a combination of integers temporarily
+	 * @param s 	 -	starting index of source
+	 * @param t		 -	ending index of source
+	 * @param index	 -	current index
+	 * @param k		 -	size of combination
+	 * @param it	 -	ArrayList that will hold combinations of integers
+     */	
+	public void combineInts(List <Integer> source, int[] temp, int s,
+                                int t, int index, int k, List <List<Integer>> it)
+    {
+		List <Integer> copy = new ArrayList <Integer>(); //create an ArrayList to hold a combination of integers 
+
+		//if index is equal to the size of the combination requested
+        if (index == k) {
+			int i = 0;
+			//iterate through an array containing a combination of integers
+			while(i < k) {
+				copy.add(temp[i]); //copy each integer in the combination 
+				i++;
+			}
+			it.add(copy); //add combination to ArrayList containing all integer combinations
             return;
         }
 
-        // replace index with all possible elements. The condition
-        // "end-i+1 >= r-index" makes sure that including one element
-        // at index will make a combination with remaining elements
-        // at remaining positions
-        for (int i = start; i <= end && end - i + 1 >= r - index; i++) {
-            data[index] = arr[i];
-            combinationUtil(arr, data, i+1, end, index + 1, r, it);
-        }
-	}
-	
-	/**
-	 * 
-	 * 
-	 * @param arr
-	 * @param n
-	 * @param r
-	 * @param it
-	 */
-	public void combination(int arr[], int n, int r, List <int[]> it) {
-        // A temporary array to store all combination one by one
-        int data[] = new int[r];
- 
-        // Print all combination using temporary array 'data[]'
-        combinationUtil(arr, data, 0, n-1, 0, r, it);
-    }	
+		int j = s;
+		while((j <= t) && (t - j + 1 >= k - index)) {
+			temp[index] = source.get(j); 
+			
+			//recursively call function to create all combinations of integers
+            combineInts(source, temp, j + 1, t, index + 1, k, it);
+			j++;
+		}
+	}		
 
+	/**
+	 * Method to return ArrayList with combinations
+	 * 
+	 * @return ArrayList with combinations
+	 */
+	public ArrayList<ArrayList<Furniture>> getCombinations() {
+		return this.combinations;
+	}
+
+	/**
+	 * Method to set an ArrayList with all combinations
+	 * 
+	 * @param fr - ArrayList with all combinations
+	 */
+	public void setCombinations(ArrayList<ArrayList<Furniture>> fr) {
+		this.combinations = new ArrayList<ArrayList<Furniture>>(fr);
+	}
 } // end of class declaration, InventoryHandler

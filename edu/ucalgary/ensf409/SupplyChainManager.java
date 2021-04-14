@@ -19,7 +19,6 @@ import java.io.IOException;
  * @since 1.0
  */
 
-
 /**
  * SupplyChainManager is the main class, which handles program execution
  * and database connectivity. The class will process the user inputs.
