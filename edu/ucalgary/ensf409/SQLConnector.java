@@ -17,7 +17,7 @@ import java.util.Scanner;
  * @author Stalin D Cunha<a href="mailto:stalin.dcunha@ucalgary.ca">
  *         stalin.dcunha@ucalgary.ca</a>
  *         
- * @version 1.1
+ * @version 1.2
  * @since 1.0
  */
 
