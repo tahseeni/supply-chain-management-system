@@ -13,6 +13,6 @@ Authors: Nabeel Amjad, Stalin D. Cunha, Tahseen Intesar, Gurpartap Sohi
 2. Compile the java files using the classpath: `javac -cp .;lib\* edu\ucalgary\ensf409\*.java`
 3. Open the MySQL command line client and execute the command `source path\inventory.sql;` ,
 where path is the pathname to the directory in which `inventory.sql` is located.
-4. Run `SupplyChainManagerTest`: `java -cp .;lib\* org.junit.runner.JUnitCore edu.ucalgary.ensf409.SupplyChainManagerTest`.
+4. Run `SupplyChainManagerTest`: `java -cp .;lib\* org.junit.runner.JUnitCore edu.ucalgary.ensf409.SupplyChainManagerTest` and enter the database credentials
 5. Run `SQLConnectorTest`: `java -cp .;lib\* org.junit.runner.JUnitCore edu.ucalgary.ensf409.SQLConnectorTest`.
 6. Repeat step 3 to restore the database.

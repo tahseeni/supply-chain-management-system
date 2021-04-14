@@ -45,8 +45,8 @@ public class SQLConnector {
 	 */
 	public SQLConnector(Scanner databasePrompter) {
 		// first, get the database login credentials
-		String username = "";
-		String password = "";
+		String username = "scm";
+		String password = "ensf409";
 
 		try {
 			System.out.println("\nPlease enter the database username.");

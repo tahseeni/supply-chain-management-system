@@ -18,7 +18,6 @@ package edu.ucalgary.ensf409;
  */
 
 import org.junit.*;
-import org.hamcrest.core.IsNot;
 import static org.junit.Assert.*;
 import java.util.*;
 
@@ -75,7 +74,7 @@ public class SQLConnectorTest {
 		f.add(new Furniture("C0942", "mesh", 175, parts1));
 		f.add(new Furniture("C9890", "mesh", 50, parts2));
 		
-		assertThat(f.get(0).getParts(), IsNot.not(test.getFurniture("chair", "mesh").get(0).getParts()));
+		assertArrayEquals(f.get(0).getParts(), test.getFurniture("chair", "mesh").get(0).getParts());
 	}
 	
 	//Test for manufacturers for chairs
@@ -109,14 +108,24 @@ public class SQLConnectorTest {
 		assertTrue("This category doesn't exist.", test.getManufacturers("Fridge").isEmpty());
 	}
 	
-	//Remove furniture entry, and test if it is empty
+	//Remove furniture entry, and test for different size of the arrays
 	@Test
 	public void testRemoveFurniture() {
 		ArrayList<Furniture> f = new ArrayList<>();
 		
-		f.add(new Furniture("C9891", "Mesh", 50, new char[] {'N', 'Y', 'N', 'Y'}));
+		f.add(new Furniture("C9890", "Mesh", 50, new char[] {'N', 'Y', 'N', 'Y'}));
 		test.removeFurniture(f, "Chair");
+		
+		ArrayList<Furniture> g = test.getFurniture("Chair", "Mesh");
+		ArrayList<Furniture> h = new ArrayList<Furniture>();
+		
+		h.add(new Furniture("C0942", "Mesh", 175, new char[] {'Y', 'N', 'Y', 'Y'}));
+		h.add(new Furniture("C6748", "Mesh", 75, new char[] {'Y', 'N', 'N', 'N'}));
+		h.add(new Furniture("C8138", "Mesh", 75, new char[] {'N', 'N', 'Y', 'N'}));
+		h.add(new Furniture("C9890", "Mesh", 50, new char[] {'N', 'Y', 'N', 'Y'}));
+		
+		//g should be 3, h should be 4
+		assertNotEquals(g.size(), h.size());
 	}
-	
 	
 }

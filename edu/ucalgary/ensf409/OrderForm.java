@@ -134,15 +134,15 @@ public class OrderForm {
             System.out.println("\n\nOrder is valid. It will now be processed.");
             System.out.println("Generating order information...");
             this.generateReceipt(userItem, userType, userQty);
-            System.out.println("Order receipt has been generated.");
+            System.out.println("The order receipt has been generated.");
             
-            //uncomment this later
-            //db.removeFurniture(this.convertToItemsList(this.getOrder()), userItem);
+            //uncomment when turning it in
+            db.removeFurniture(this.convertToItemsList(this.getOrder()), userItem);
             
             System.out.println("\n\nThank you for using our service!");
             
         } else {
-            System.out.println("Order cannot be fulfilled based on current inventory.");
+            System.out.println("The order cannot be fulfilled based on the current inventory.");
     		this.printSuggestedManufacturers(db, userItem);
     		System.out.println("\nPlease check again when the inventory has been restocked.");
     		System.out.println("\n\nThank you for using our service.");

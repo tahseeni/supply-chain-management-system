@@ -28,7 +28,7 @@ public class OrderFormTest {
 	@Test
 	public void testOrderedItems() {
 		furnitureData.add(new Furniture("C3000", "Mesh", 75, new char[] {'Y', 'Y', 'Y'}));
-		OrderForm test = new OrderForm(new InventoryHandler(furnitureData));
+		OrderForm test = new OrderForm(new Inventory(furnitureData));
 		assertEquals("ID: C3000\n", test.orderedItems(furnitureData));
 	}
 	
@@ -41,7 +41,7 @@ public class OrderFormTest {
 		furnitureData.add(new Furniture("C3005", "Mesh", 75, new char[] {'N', 'Y', 'Y'}));
 		furnitureData.add(new Furniture("C3010", "Mesh", 100, new char[] {'Y', 'Y', 'Y'}));
 		
-		OrderForm test = new OrderForm(new InventoryHandler(furnitureData));
+		OrderForm test = new OrderForm(new Inventory(furnitureData));
 		ArrayList<ArrayList<Furniture>> combinations = new ArrayList<ArrayList<Furniture>>();
 		combinations.add(furnitureData);
 		
@@ -56,7 +56,7 @@ public class OrderFormTest {
 		furnitureData.add(new Furniture("C3020", "Mesh", 50, new char[] {'Y', 'N', 'N'}));
 		furnitureData.add(new Furniture("C3030", "Mesh", 100, new char[] {'N', 'Y', 'Y'}));
 		
-		OrderForm test = new OrderForm(new InventoryHandler(furnitureData));
+		OrderForm test = new OrderForm(new Inventory(furnitureData));
 		assertEquals(150, test.calculateOrderTotal(furnitureData));
 	}
 	
@@ -73,7 +73,7 @@ public class OrderFormTest {
 		f.add(furnitureData);
 		f.add(f2);
 		
-		OrderForm test = new OrderForm(new InventoryHandler(furnitureData));
+		OrderForm test = new OrderForm(new Inventory(furnitureData));
 		assertEquals(3, test.convertToItemsList(f).size());
 	}
 	
@@ -85,7 +85,7 @@ public class OrderFormTest {
 		furnitureData.add(new Furniture("C3005", "Mesh", 75, new char[] {'N', 'Y', 'Y'}));
 		
 		f3.add(furnitureData);
-		OrderForm test = new OrderForm(new InventoryHandler(furnitureData));
+		OrderForm test = new OrderForm(new Inventory(furnitureData));
 		
 		test.setOrder(f3);
 		assertEquals(f3, test.getOrder());
