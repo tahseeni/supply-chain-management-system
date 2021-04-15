@@ -61,7 +61,7 @@ public class Inventory{
 	
 			//loop will run n times and will generate combinations of indices
 			//combinations will have a minimum size of 1 and a maximum size of n 
-			for(int i = 0; i < f.size(); i ++) {
+			for(int i = 0; i < f.size(); i++) {
 				//array that is used to store a combination of integers
 				int[] temp = new int[i+1];
 				
@@ -130,7 +130,7 @@ public class Inventory{
 			}
 			p2 = 0;	//reset price of current element to be calculated again
 		}
-		return min;	//return index of cheapest element
+		return min;	//return index of cheapest element in the ArrayList
 	}
 
 	/**
@@ -219,7 +219,7 @@ public class Inventory{
      * 
      * @param f2  -	ArrayList with all possible combinations of furniture items
 	 * @param n	  -	number of items requested
-     * @return return index of cheapest combination
+     * @return ArrayList containing all of the valid combination
      */	
 	public ArrayList<ArrayList<Furniture>> getValidCombinations(ArrayList<ArrayList<Furniture>> f2, int n) {
 		ArrayList<ArrayList<Furniture>> f3 = new ArrayList<ArrayList<Furniture>>(); //temporary ArrayList

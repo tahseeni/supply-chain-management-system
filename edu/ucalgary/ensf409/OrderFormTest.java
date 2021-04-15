@@ -32,22 +32,6 @@ public class OrderFormTest {
 		assertEquals("ID: C3000\n", test.orderedItems(furnitureData));
 	}
 	
-	//generateOrder
-	@Test
-	public void testGeneratorOrder() {
-		
-		//arbitrary data entries
-		furnitureData.add(new Furniture("C3000", "Mesh", 50, new char[] {'Y', 'N', 'N'}));
-		furnitureData.add(new Furniture("C3005", "Mesh", 75, new char[] {'N', 'Y', 'Y'}));
-		furnitureData.add(new Furniture("C3010", "Mesh", 100, new char[] {'Y', 'Y', 'Y'}));
-		
-		OrderForm test = new OrderForm(new Inventory(furnitureData));
-		ArrayList<ArrayList<Furniture>> combinations = new ArrayList<ArrayList<Furniture>>();
-		combinations.add(furnitureData);
-		
-		assertEquals("Expected size should be 1", 1, test.generateOrder(1, combinations).size());
-	}
-	
 	//calculateOrderTotal
 	@Test
 	public void testCalculateOrderTotal() {
@@ -60,26 +44,9 @@ public class OrderFormTest {
 		assertEquals(150, test.calculateOrderTotal(furnitureData));
 	}
 	
-	//Test to convert the total entries into an item list
-	@Test
-	public void testConvertToItemsList() {
-		ArrayList<ArrayList<Furniture>> f = new ArrayList<ArrayList<Furniture>>();
-		ArrayList<Furniture> f2 = new ArrayList<Furniture>();
-		
-		furnitureData.add(new Furniture("C3000", "Mesh", 50, new char[] {'Y', 'N', 'N'}));
-		furnitureData.add(new Furniture("C3005", "Mesh", 75, new char[] {'N', 'Y', 'Y'}));
-		
-		f2.add(new Furniture("C3010", "Mesh", 100, new char[] {'Y', 'Y', 'Y'}));
-		f.add(furnitureData);
-		f.add(f2);
-		
-		OrderForm test = new OrderForm(new Inventory(furnitureData));
-		assertEquals(3, test.convertToItemsList(f).size());
-	}
-	
 	//Test the setter and getter methods for the OrderForm
 	@Test
-	public void testGetAndSetOrder() {
+	public void testGetAndSetOrderCombinations() {
 		ArrayList<ArrayList<Furniture>> f3 = new ArrayList<ArrayList<Furniture>>();
 		furnitureData.add(new Furniture("C3000", "Mesh", 50, new char[] {'Y', 'N', 'N'}));
 		furnitureData.add(new Furniture("C3005", "Mesh", 75, new char[] {'N', 'Y', 'Y'}));
@@ -87,8 +54,36 @@ public class OrderFormTest {
 		f3.add(furnitureData);
 		OrderForm test = new OrderForm(new Inventory(furnitureData));
 		
-		test.setOrder(f3);
-		assertEquals(f3, test.getOrder());
+		test.setOrderCombinations(f3);
+		assertEquals(f3, test.getOrderCombinations());
+	}
+	
+	//Test the setter and getter methods for the OrderForm
+	@Test
+	public void testGetAndSetOrder1() {
+		//the char arrays are different from the test before
+		furnitureData.add(new Furniture("C3000", "Mesh", 50, new char[] {'Y', 'N', 'N'}));
+		furnitureData.add(new Furniture("C3005", "Mesh", 75, new char[] {'N', 'Y', 'Y'}));
+		
+		OrderForm test = new OrderForm(new Inventory(furnitureData));
+		ArrayList<ArrayList<Furniture>> f3 = new ArrayList<ArrayList<Furniture>>(test.getInventory().generateCombinations(furnitureData));
+		
+		test.setOrder(test.getInventory().findCheapest(f3), test.getInventory().getValidCombinations(f3, 1));
+		assertFalse(test.getOrder().isEmpty());
+	}
+	
+	//Test the setter and getter methods for the Order
+	@Test
+	public void testGetAndSetOrder2() {
+		//the char arrays are different from the test before
+		furnitureData.add(new Furniture("C3000", "Mesh", 50, new char[] {'Y', 'N', 'N'}));
+		furnitureData.add(new Furniture("C3050", "Mesh", 75, new char[] {'N', 'N', 'Y'}));
+		
+		OrderForm test = new OrderForm(new Inventory(furnitureData));
+		ArrayList<ArrayList<Furniture>> f3 = new ArrayList<ArrayList<Furniture>>(test.getInventory().generateCombinations(furnitureData));
+		
+		test.setOrder(test.getInventory().findCheapest(f3), test.getInventory().getValidCombinations(f3, 1));
+		assertTrue(test.getOrder().isEmpty());
 	}
 	
 }

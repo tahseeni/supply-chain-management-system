@@ -2,6 +2,7 @@ package edu.ucalgary.ensf409;
 
 import static org.junit.Assert.*;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Tahseen Intesar <a href="mailto:tahseen.intesar@ucalgary.ca">
@@ -28,10 +29,10 @@ public class InventoryTest {
 	
 	//constructor that initializes all of the mesh chair entries
 	public InventoryTest() {
-		f.add(new Furniture("C9890", "Mesh", 50, new char[] {'N', 'Y', 'N', 'Y'}));
+		f.add(new Furniture("C0942", "Mesh", 175, new char[] {'Y', 'N', 'Y', 'Y'}));
 		f.add(new Furniture("C6748", "Mesh", 75, new char[] {'Y', 'N', 'N', 'N'}));
 		f.add(new Furniture("C8138", "Mesh", 75, new char[] {'N', 'N', 'Y', 'N'}));
-		f.add(new Furniture("C0942", "Mesh", 175, new char[] {'Y', 'N', 'Y', 'Y'}));
+		f.add(new Furniture("C9890", "Mesh", 50, new char[] {'N', 'Y', 'N', 'Y'}));
 		test = new Inventory(f);
 	}
 	
@@ -42,8 +43,10 @@ public class InventoryTest {
 		assertFalse(f2.isEmpty());
 	}
 	
-	//Test for passing an empty ArrayList into generateCombinations()
-	//expect the returned array to be empty
+	/*
+	 * Test for passing an empty ArrayList into generateCombinations()
+	 * expect the returned array to be empty
+	 */
 	@Test
 	public void testGenerateCombinations2() {
 		ArrayList<Furniture> f3 = new ArrayList<Furniture>();
@@ -51,86 +54,106 @@ public class InventoryTest {
 		assertTrue(f4.isEmpty());
 	}
 	
-	//Test for finding the cheapest combination index
+	//Test for finding the cheapest item index in the furniture list
 	@Test
 	public void testFindCheapest() {
-		ArrayList<ArrayList<Furniture>> f5 = test.generateCombinations(f);
-		assertEquals("Cheapest index for a mesh chair is at 0.", 0, test.findCheapest(f5));
+		ArrayList<ArrayList<Furniture>> f5 = new ArrayList<ArrayList<Furniture>>();
+		ArrayList<Furniture> f6 = new ArrayList<Furniture>();
+			
+		//valid combination one
+		f6.add(f.get(0));
+		f6.add(f.get(3));
+		f5.add(f6);
+		
+		//valid combination two
+		f6 = new ArrayList<Furniture>();
+		f6.add(f.get(1));
+		f6.add(f.get(2));
+		f6.add(f.get(3));
+		f5.add(f6);
+		
+		assertEquals("Cheapest index for a mesh chair is at 1.", 1, test.findCheapest(f5));
 	}
 	
-	//removeExcessIndex test
+	//check for ordering 1 mesh chair, should return true
 	@Test
-	public void testRemoveExcessIndex() {
-		ArrayList<ArrayList<Furniture>> f6 = new ArrayList<ArrayList<Furniture>>();
+	public void testIsValid1() {
+		ArrayList<char[]> parts = new ArrayList<char[]>();
 		
-		//generate arbitrary combinations
-		ArrayList<Furniture> f7 = new ArrayList<Furniture>();
-		f7.add(f.get(0));
-		f7.add(f.get(3));
+		for(int i = 0; i < f.size(); i++) {
+			parts.add(f.get(i).getParts());
+		}
 		
-		ArrayList<Furniture> f8 = new ArrayList<Furniture>();
-		f8.add(f.get(0));
-		f8.add(f.get(1));
-		f8.add(f.get(3));
-		
-		f6.add(f7);
-		f6.add(f8);
-		
-		assertEquals("Excess index is at 1.", 1, test.excessIndex(f6));
+		assertTrue(test.isValid(1, parts));
 	}
 	
-	//removeExcessCombinations
+	//check for ordering 2 mesh chairs, should return false
 	@Test
-	public void testRemoveExcessCombinations() {
-		ArrayList<ArrayList<Furniture>> f9 = new ArrayList<ArrayList<Furniture>>();
+	public void testIsValid2() {
+		ArrayList<char[]> parts = new ArrayList<char[]>();
 		
-		//generate arbitrary combinations
-		ArrayList<Furniture> f10 = new ArrayList<Furniture>();
-		f10.add(f.get(0));
-		f10.add(f.get(3));
+		for(int i = 0; i < f.size(); i++) {
+			parts.add(f.get(i).getParts());
+		}
 		
-		ArrayList<Furniture> f11 = new ArrayList<Furniture>();
-		f11.add(f.get(0));
-		f11.add(f.get(1));
-		f11.add(f.get(3));
-		
-		f9.add(f10);
-		f9.add(f11);
-		
-		assertEquals("Size of ArrayList after removing excess combinations is 1.", 1, test.removeInvalidCombinations(f9).size());
+		assertFalse(test.isValid(2, parts));
 	}
 	
-	//test if the combination index is located at index 0 
+	//check for an invalid combination (2 mesh chairs)
 	@Test
-	public void testUsedIndex() {
-		ArrayList<ArrayList<Furniture>> order = new ArrayList<ArrayList<Furniture>>();
-		ArrayList<Furniture> f12 = new ArrayList<Furniture>();
+	public void testGetValidCombinations1() {
+		//generate all combinations possible
+		ArrayList<ArrayList<Furniture>> f7 = new ArrayList<ArrayList<Furniture>>(test.generateCombinations(f));
 		
-		f12.add(f.get(0));
-		f12.add(f.get(3));
-		order.add(f12);
+		//generate all valid combinations, if any
+		ArrayList<ArrayList<Furniture>> f8 = test.getValidCombinations(f7, 2);
 		
-		assertEquals("Used combination index is at index 0.", 0, test.usedIndex(test.getCombinations(), order));
+		//no valid combinations for 2 mesh chairs
+		assertTrue(f8.isEmpty());
 	}
 	
-	//removeUsedCombinations
+	//check for a valid combination (1 mesh chair)
 	@Test
-	public void testRemoveUsedCombinations() {
-		ArrayList<ArrayList<Furniture>> order = new ArrayList<ArrayList<Furniture>>();
-		ArrayList<Furniture> f13 = new ArrayList<Furniture>();
+	public void testGetValidCombinations2() {
+		//generate all combinations possible
+		ArrayList<ArrayList<Furniture>> f9 = new ArrayList<ArrayList<Furniture>>(test.generateCombinations(f));
 		
-		f13.add(f.get(0));
-		f13.add(f.get(3));
-		order.add(f13);
+		//generate all valid combinations, if any
+		ArrayList<ArrayList<Furniture>> f10 = test.getValidCombinations(f9, 1);
 		
-		assertEquals("The size of the ArrayList after removing used combinations is 0.", 
-				0, test.removeFromInventory(test.getCombinations(), order).size());
+		//there exists at least 1 valid combination for 1 mesh chair
+		assertFalse(f10.isEmpty());
 	}
 	
-	//test for getting the combinations
+	/**
+	 * Test to check if combinations of integers of size k.
+	 *	Requires that size of each combination is less than or equal to number
+	 *	of elements in the input ArrayList
+	 */
+	@Test
+	public void testCombineInts() {
+		List <Integer> ints = new ArrayList<Integer>(); //input ArrayList indices
+		List <List<Integer>> it = new ArrayList<>(); //holds all combinations
+		
+		int n = 4; //number of indices in the ArrayList (any value)
+		int k = 3; //size of the combinations, requires that k <= n
+		
+		for(int i = 0; i < n; i++) {
+			ints.add(i);
+		}
+		
+		int temp[] = new int[k]; //hold combinations of size k;
+		
+		//find combinations of the indices of furniture objects stored in ArrayList f
+		test.combineInts(ints, temp, 0, ints.size() - 1, 0, k, it);
+		
+		assertEquals("Size of each combination should be " + k, k, it.get(0).size());
+	}
+	
+	//Test for getting the combinations
 	@Test
 	public void testGetCombinations() {
-		//we expect this to not be empty 
+		//The returned ArrayList will not be empty for this given ArrayList f
 		assertFalse(test.getCombinations().isEmpty());
 	}
 }

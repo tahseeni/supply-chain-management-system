@@ -69,7 +69,8 @@ public class OrderForm {
     }
 
     /**
-     * Method to set orderCombinations equal an ArrayList containing all valid combinations of furniture items
+     * Method to set orderCombinations equal an ArrayList 
+     * containing all valid combinations of furniture items
      * 
      * @param orderCombos - ArrayList containing valid combinations of furniture items (contain all required parts)
      */
@@ -78,17 +79,24 @@ public class OrderForm {
 	}
 
     /**
-     * Method to set order equal to an ArrayList containing all furniture items from the cheapest combination
-     * @param index         index of cheapest combination of furniture items
-     * @param orderCombos   ArrayList containing all valid combinations of furniture items (contain all required parts)
+     * Method to set order equal to an ArrayList containing all 
+     * furniture items from the cheapest combination
+     * 
+     * @param index       -  index of cheapest combination of furniture items
+     * @param orderCombos -  ArrayList containing all valid combinations of furniture items (contain all required parts)
      */
     public void setOrder(int index, ArrayList <ArrayList <Furniture>> orderCombos) {
-        this.order = new ArrayList <Furniture>(orderCombos.get(index));
+    	if(!orderCombos.isEmpty()) {
+    		this.order = new ArrayList <Furniture>(orderCombos.get(index));
+    	}
+    	else {
+    		this.order = new ArrayList <Furniture>();
+    	}
     }
 
     /**
      * Method to set InventoryHandler object equal to input InventoryHandler object
-     * @param inv InventoryHandler object containing combinations of furniture read from database file
+     * @param inv - InventoryHandler object containing combinations of furniture read from database file
      */
     public void setInventoryHandler(Inventory inv) {
         this.inventory = new Inventory(inv);
@@ -133,7 +141,7 @@ public class OrderForm {
             System.out.println("The order receipt has been generated.");
             
             //uncomment this later
-            //db.removeFurniture(this.getOrder(), userItem);
+            db.removeFurniture(this.getOrder(), userItem);
             
             System.out.println("\n\nThank you for using our service!");
             
@@ -211,21 +219,4 @@ public class OrderForm {
         return total;
     }
 
-    /**
-     * Method to convert an incoming ArrayList containing combinations
-     * of ordered items to an ArrayList containing all ordered items.
-     * 
-     * @param itemCombinations - ArrayList containing combinations of ordered items
-     * @return ArrayList containing ordered items
-     */
-    public ArrayList<Furniture> convertToItemsList(ArrayList<ArrayList<Furniture>> itemCombinations) {
-        ArrayList<Furniture> items = new ArrayList<Furniture>();
-        for (int i = 0; i < itemCombinations.size(); i++) {
-            for (int j = 0; j < itemCombinations.get(i).size(); j++) {
-                items.add(itemCombinations.get(i).get(j));
-            }
-        }
-        return items;
-    }
-    
 } //end of class declaration, OrderForm
