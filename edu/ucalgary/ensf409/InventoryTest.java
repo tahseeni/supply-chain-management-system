@@ -3,8 +3,9 @@ package edu.ucalgary.ensf409;
 import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.*;
 
-/**
+/**GROUP 32
  * @author Tahseen Intesar <a href="mailto:tahseen.intesar@ucalgary.ca">
  *         tahseen.intesar@ucalgary.ca</a>
  *         
@@ -21,8 +22,9 @@ import java.util.List;
  * @since 1.0
  */
 
-import org.junit.*;
-
+/**
+ * Class to test the methods within the Inventory Class
+ */
 public class InventoryTest {
 	static Inventory test;
 	ArrayList<Furniture> f = new ArrayList<>();

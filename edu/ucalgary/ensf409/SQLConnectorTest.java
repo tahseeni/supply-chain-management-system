@@ -1,6 +1,6 @@
 package edu.ucalgary.ensf409;
 
-/**
+/** GROUP 32
  * @author Tahseen Intesar <a href="mailto:tahseen.intesar@ucalgary.ca">
  *         tahseen.intesar@ucalgary.ca</a>
  *         
@@ -21,6 +21,9 @@ import org.junit.*;
 import static org.junit.Assert.*;
 import java.util.*;
 
+/**
+ * Class to test the methods within the SQLConnector Class
+ */
 public class SQLConnectorTest {
 	static SQLConnector test;
 	
@@ -30,7 +33,7 @@ public class SQLConnectorTest {
 		test = new SQLConnector(databasePrompter);
 	}
 	
-	//Test if all mesh chair entries are returned from the database, based on ID
+	//Test if all mesh chair entries are returned from the database, based on item ID
 	@Test
 	public void testGetValidFurniture1() {
 		ArrayList<Furniture> f = new ArrayList<>();
@@ -40,7 +43,9 @@ public class SQLConnectorTest {
 		f.add(new Furniture("C8138", "Mesh", 75, new char[] {'N', 'N', 'Y', 'N'}));
 		f.add(new Furniture("C9890", "Mesh", 50, new char[] {'N', 'Y', 'N', 'Y'}));
 		
-		assertEquals(f.get(0).getID(), test.getFurniture("CHAIR", "Mesh").get(0).getID());
+		assertEquals("Test will pass because the ArrayList f matches "
+				+ "the ArrayList returned from the given inventory.sql", 
+				f.get(3).getID(), test.getFurniture("CHAIR", "Mesh").get(3).getID());
 	}
 	
 	//Test if all adjustable desk entries are returned, based on the parts array
@@ -53,13 +58,15 @@ public class SQLConnectorTest {
 		f.add(new Furniture("D1030", "Adjustable", 150, parts1));
 		f.add(new Furniture("D2746", "Adjustable", 250, parts2));
 		
-		assertArrayEquals(f.get(0).getParts(), test.getFurniture("DESK", "Adjustable").get(0).getParts());
+		assertArrayEquals("Test will pass because the parts arrays from both ArrayLists match.",
+				f.get(0).getParts(), test.getFurniture("DESK", "Adjustable").get(0).getParts());
 	}
 	
 	//Test for non-existent type within category (old, chair)
 	@Test
 	public void testInvalidGetFurniture1() {
-		assert(test.getFurniture("chair", "old").isEmpty());
+		assertTrue("Test should pass because the type does not exist.",
+				test.getFurniture("chair", "old").isEmpty());
 	}
 	
 	//Test to ensure that an arbitrary furniture ArrayList is not
@@ -74,10 +81,11 @@ public class SQLConnectorTest {
 		f.add(new Furniture("C0942", "mesh", 175, parts1));
 		f.add(new Furniture("C9890", "mesh", 50, parts2));
 		
-		assertArrayEquals(f.get(0).getParts(), test.getFurniture("chair", "mesh").get(0).getParts());
+		assertArrayEquals("Test should pass because the type does not exist.", 
+				f.get(0).getParts(), test.getFurniture("chair", "mesh").get(0).getParts());
 	}
 	
-	//Test for manufacturers for chairs
+	//Test for getting the manufacturers for chairs (from the given inventory.sql)
 	@Test
 	public void testGetManufacturers1() {
 		ArrayList<String> f = new ArrayList<>();
@@ -87,10 +95,11 @@ public class SQLConnectorTest {
 		f.add("Furniture Goods");
 		f.add("Fine Office Supplies");
 		
-		assertEquals(f, test.getManufacturers("Chair"));
+		assertEquals("Test should pass with the inventory.sql database"
+				+ " that was provided.", f, test.getManufacturers("Chair"));
 	}
 	
-	//Test for manufacturers for lamps
+	//Test for getting the manufacturers for lamps (from the given inventory.sql)
 	@Test
 	public void testGetManufacturers2() {
 		ArrayList<String> f = new ArrayList<>();
@@ -99,16 +108,18 @@ public class SQLConnectorTest {
 		f.add("Furniture Goods");
 		f.add("Fine Office Supplies");
 		
-		assertEquals(f, test.getManufacturers("Lamp"));
+		assertEquals("Test should pass with the inventory.sql database"
+				+ " that was provided.", f, test.getManufacturers("Lamp"));
 	}
 	
-	//Test for manufacturers from non-existent category
+	//Test for getting the manufacturers from a non-existent category
 	@Test
 	public void testGetManufacturers3() {
-		assertTrue("This category doesn't exist.", test.getManufacturers("Fridge").isEmpty());
+		assertTrue("Test passes because this category doesn't exist.",
+				test.getManufacturers("Fridge").isEmpty());
 	}
 	
-	//Remove furniture entry, and test for different size of the arrays
+	//Test for removing furniture entry, and test for different size of the arrays
 	@Test
 	public void testRemoveFurniture() {
 		ArrayList<Furniture> f = new ArrayList<>();
@@ -124,8 +135,9 @@ public class SQLConnectorTest {
 		h.add(new Furniture("C8138", "Mesh", 75, new char[] {'N', 'N', 'Y', 'N'}));
 		h.add(new Furniture("C9890", "Mesh", 50, new char[] {'N', 'Y', 'N', 'Y'}));
 		
-		//g should be 3, h should be 4
-		assertNotEquals(g.size(), h.size());
+		//g should be size 3 (1 removed query), h should be size 4 (all queries)
+		assertNotEquals("Test passes because the sizes of the"
+				+ " two ArrayLists do not match.", g.size(), h.size());
 	}
-	
+
 }

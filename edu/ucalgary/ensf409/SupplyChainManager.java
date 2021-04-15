@@ -1,8 +1,9 @@
 package edu.ucalgary.ensf409;
+
 import java.util.Scanner;
 import java.io.IOException;
 
-/**
+/** GROUP 32
  * @author Tahseen Intesar <a href="mailto:tahseen.intesar@ucalgary.ca">
  *         tahseen.intesar@ucalgary.ca</a>
  *         

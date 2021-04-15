@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-/**
+/**GROUP 32
  * @author Tahseen Intesar <a href="mailto:tahseen.intesar@ucalgary.ca">
  *         tahseen.intesar@ucalgary.ca</a>
  *         

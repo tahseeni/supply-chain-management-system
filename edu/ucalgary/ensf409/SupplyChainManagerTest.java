@@ -3,7 +3,7 @@ package edu.ucalgary.ensf409;
 import static org.junit.Assert.*;
 import org.junit.*;
 
-/**
+/** GROUP 32
  * @author Tahseen Intesar <a href="mailto:tahseen.intesar@ucalgary.ca">
  *         tahseen.intesar@ucalgary.ca</a>
  *         
@@ -20,6 +20,9 @@ import org.junit.*;
  * @since 1.0
  */
 
+/**
+ * Class to test the methods within the SupplyChainManager Class
+ */
 public class SupplyChainManagerTest {
 	static SupplyChainManager test;
 	
@@ -29,52 +32,59 @@ public class SupplyChainManagerTest {
 		test = new SupplyChainManager();
 	}
 	
-	//input of 1 should pass 1, as it is valid
+	//test for valid input for furniture choice (expecting a digit 0-4)
 	@Test
 	public void testItemValidity1() {
-		assertEquals("1", test.isValidItem("1"));
+		String k = "4";
+		assertEquals("Test will pass if k is " + k, k, test.isValidItem(k));
 	}
 	
-	//input of -5 should return null, as it is invalid
+	//test for negative input for furniture choice (expecting a digit 0-4)
 	@Test
 	public void testItemValidity2() {
-		assertEquals(null, test.isValidItem("-5"));
+		assertEquals("Negative input choice will return null.", null, test.isValidItem("-5"));
 	}
 	
-	//word input should return null if unexpected furniture choice
+	//test for word input for furniture choice (expecting a digit 0-4)
 	@Test
 	public void testItemValidity3() {
-		assertEquals(null, test.isValidItem("random"));
+		assertEquals("A word input choice will return null.", null, test.isValidItem("randomTextHere"));
 	}
 	
-	//all lower case when choosing the type
+	//test for all lower case when choosing the type
 	@Test
 	public void testSetFurnitureType1() {
-		assertEquals("Traditional", test.setFurnitureType("Desk", "traditional"));
+		assertEquals("Lowercase input will return the same string with corrected "
+				+ "format.", "Traditional", test.setFurnitureType("Desk", "traditional"));
 	}
 	
-	//all upper case when choosing the type
+	//test for all upper case input when choosing the type
 	@Test
 	public void testSetFurnitureType2() {
-		assertEquals("Study", test.setFurnitureType("Lamp", "STUDY"));
+		assertEquals("Uppercase input will return the same string with corrected "
+				+ "format.", "Study", test.setFurnitureType("Lamp", "STUDY"));
 	}
 	
-	//mixed case when choosing the type
+	//test for mixed case input when choosing the type
 	@Test
 	public void testSetFurnitureType3() {
-		assertEquals("Large", test.setFurnitureType("Filing", "lArGe"));
+		assertEquals("Mixed case input will return the same string with corrected "
+				+ "format.", "Large", test.setFurnitureType("Filing", "lArGe"));
 	}
 	
-	//any quantity above 0 is valid
+	//test for any furniture quantity above 0
 	@Test
 	public void testSetFurnitureQuantity() {
-		assertEquals(2, test.setFurnitureQuantity(2));
+		int k = 4; //constraint : k > 0
+		assertEquals("Positive input will result in that "
+				+ "same input being returned.", k, test.setFurnitureQuantity(k));
 	}
 	
-	//negative quantity input is invalid
+	//test for negative furniture quantity input
 	@Test
 	public void testSetFurnitureQuantity2() {
-		assertEquals(0, test.setFurnitureQuantity(-100));
+		assertEquals("Negative input will result in "
+				+ "a 0 being returned.", 0, test.setFurnitureQuantity(-100));
 	}
 	
 }

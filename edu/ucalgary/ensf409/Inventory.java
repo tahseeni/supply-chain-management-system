@@ -15,12 +15,12 @@ import java.util.*;
  * @author Stalin D Cunha<a href="mailto:stalin.dcunha@ucalgary.ca">
  *         stalin.dcunha@ucalgary.ca</a>
  * 
- * @version 1.2
+ * @version 1.3
  * @since 1.0
  */
 
 /**
- * Inventory class handles inventory data and creates valid combinations
+ * Inventory Class handles inventory data and creates valid combinations
  * of furniture to be used
  */
 public class Inventory{
